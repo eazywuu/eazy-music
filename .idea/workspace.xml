@@ -4,7 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="efa438e7-ef4a-4ae4-bd85-8aed25c7973d" name="Default Changelist" comment="" />
+    <list default="true" id="efa438e7-ef4a-4ae4-bd85-8aed25c7973d" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.env" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/application.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/wyz/music_springboot/MusicSpringbootApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/wyz/music_springboot/MusicSpringbootApplicationTests.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -24,7 +32,9 @@
     </option>
   </component>
   <component name="ProjectId" id="25oIe180CbdHfYyANUJt1pRaMbb" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -45,6 +55,11 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\music-app\music_springboot" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="MusicSpringbootApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
       <module name="music_springboot" />
@@ -71,7 +86,7 @@
       <workItem from="1646188837758" duration="46000" />
       <workItem from="1646190543429" duration="20000" />
       <workItem from="1669344227101" duration="1149000" />
-      <workItem from="1669345386651" duration="2489000" />
+      <workItem from="1669345386651" duration="2822000" />
     </task>
     <servers />
   </component>
