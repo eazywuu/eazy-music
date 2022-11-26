@@ -21,7 +21,7 @@ FROM alpine:3.13
 ENV MYSQL_HOST 10.9.108.174
 ENV MYSQL_USERNAME music
 ENV MYSQL_PASSWORD Music2022
-ENV DATABASE_NAME music
+ENV DATABASE_NAME database_music
 
 # 容器默认时区为UTC，如需使用上海时间请启用以下时区设置命令
 # RUN apk add tzdata && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo Asia/Shanghai > /etc/timezone
