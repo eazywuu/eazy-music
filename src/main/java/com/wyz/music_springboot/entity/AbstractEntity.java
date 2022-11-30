@@ -19,8 +19,8 @@ public abstract class AbstractEntity {
     private String id;
 
     @CreationTimestamp
-    private Date createTime;
+    private Date createdTime;
 
     @UpdateTimestamp
-    private Date updateTime;
+    private Date updatedTime;
 }
