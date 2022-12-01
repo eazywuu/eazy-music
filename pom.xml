@@ -21,11 +21,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
-        <!-- web starter -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
+
         <!-- mysql connect -->
         <dependency>
             <groupId>mysql</groupId>
@@ -43,12 +39,11 @@
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
         </dependency>
-
         <!-- flyway -->
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
-            <version>5.2.4</version>
+            <version>7.15.0</version>
         </dependency>
         <!-- ksuid 数据库id生成器 -->
         <dependency>
@@ -68,6 +63,12 @@
             <artifactId>mapstruct-processor</artifactId>
             <version>1.5.3.Final</version>
             <scope>compile</scope>
+        </dependency>
+
+        <!-- web starter -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <!-- test -->
         <dependency>

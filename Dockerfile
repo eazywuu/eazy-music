@@ -13,8 +13,7 @@ COPY pom.xml /app/
 
 # 执行代码编译命令
 # 自定义settings.xml, 选用国内镜像源以提高下载速度
-RUN mvn -f /app/pom.xml clean package -Dspring.profiles.active=prod
-
+RUN mvn -f /app/pom.xml clean package -P prod
 # 选择运行时基础镜像
 FROM alpine:3.13
 
@@ -28,7 +27,7 @@ ENV APPLICATION_PORT 80
 # RUN apk add tzdata && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo Asia/Shanghai > /etc/timezone
 
 # 使用 HTTPS 协议访问容器云调用证书安装
-RUN apk add ca-certificates
+RUN apk add ca-certificate
 
 # 安装依赖包，如需其他依赖包，请到alpine依赖包管理(https://pkgs.alpinelinux.org/packages?name=php8*imagick*&branch=v3.13)查找。
 # 选用国内镜像源以提高下载速度
