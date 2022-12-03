@@ -28,7 +28,7 @@ public class User extends AbstractEntity implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    @ManyToMany(cascade = {}, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = {}, fetch = FetchType.LAZY)
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))

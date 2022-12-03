@@ -1,18 +1,10 @@
 package com.wyz.music_springboot.repository;
 
-import com.wyz.music_springboot.entity.User;
-import com.wyz.music_springboot.enums.Gender;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.Date;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class UserRepositoryTest {
-    @Autowired
+/*    @Autowired
     UserRepository userRepository;
 
     @Test
@@ -29,5 +21,5 @@ class UserRepositoryTest {
         User savedUser = userRepository.save(user);
         User result = userRepository.getByUsername("依力");
         System.out.println(result.toString());
-    }
+    }*/
 }
