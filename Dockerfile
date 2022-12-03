@@ -13,7 +13,7 @@ COPY pom.xml /app/
 
 # 执行代码编译命令
 # 自定义settings.xml, 选用国内镜像源以提高下载速度
-RUN mvn -f /app/pom.xml clean package -Dspring.profiles.active=prod
+RUN mvn -f /app/pom.xml clean package #-Dspring.profiles.active=prod
 # 选择运行时基础镜像
 FROM alpine:3.13
 
@@ -21,7 +21,12 @@ ENV MYSQL_HOST 10.9.108.174
 ENV MYSQL_USERNAME music
 ENV MYSQL_PASSWORD Music2022
 ENV DATABASE_NAME database_music
+#ENV MYSQL_HOST 175.178.228.95
+#ENV MYSQL_USERNAME root
+#ENV MYSQL_PASSWORD root
+#ENV DATABASE_NAME music
 
+ENV MYSQL_SERVER_PORT 3306
 ENV APPLICATION_PORT 80
 
 # 容器默认时区为UTC，如需使用上海时间请启用以下时区设置命令
@@ -45,7 +50,6 @@ COPY --from=build /app/target/eazy-music-0.0.1.jar .
 # 暴露端口
 # 此处端口必须与「服务设置」-「流水线」以及「手动上传代码包」部署时填写的端口一致，否则会部署失败。
 EXPOSE 80
-
 # 执行启动命令.
 # 写多行独立的CMD命令是错误写法！只有最后一行CMD命令会被执行，之前的都会被忽略，导致业务报错。
 # 请参考[Docker官方文档之CMD命令](https://docs.docker.com/engine/reference/builder/#cmd)
