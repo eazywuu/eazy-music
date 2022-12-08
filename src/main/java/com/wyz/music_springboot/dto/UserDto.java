@@ -4,6 +4,7 @@ import com.wyz.music_springboot.enums.Gender;
 import com.wyz.music_springboot.vo.RoleVo;
 import lombok.Data;
 
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -18,4 +19,11 @@ public class UserDto {
 
     private Gender gender;
 
+    private Boolean locked;
+
+    private Boolean enabled;
+
+    private String lastLoginIp;
+
+    private Date lastLoginTime;
 }

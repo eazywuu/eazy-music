@@ -21,12 +21,15 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
         super(authenticationManager);
     }
 
+    /**
+     * TODO 验证jwt是否正确且未失效
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         String header = request.getHeader(SecurityConfig.HEADER_STRING);
 
         if (header == null || !header.startsWith(SecurityConfig.TOKEN_PREFIX)) {
-            chain.doFilter(request,response);
+            chain.doFilter(request, response);
             return;
         }
         UsernamePasswordAuthenticationToken token = getAuthenticationToken(header);
@@ -39,7 +42,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
                 .build()
                 .verify(header.replace(SecurityConfig.TOKEN_PREFIX, ""))
                 .getSubject();
-            return username != null ?
-                    new UsernamePasswordAuthenticationToken(username, null, new ArrayList<>()) : null;
+        return username != null ?
+                new UsernamePasswordAuthenticationToken(username, null, new ArrayList<>()) : null;
     }
 }
