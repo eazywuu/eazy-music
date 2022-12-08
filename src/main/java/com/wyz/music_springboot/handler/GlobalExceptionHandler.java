@@ -4,20 +4,24 @@ import com.wyz.music_springboot.exception.BizException;
 import com.wyz.music_springboot.exception.ErrorResponse;
 import com.wyz.music_springboot.exception.ExceptionType;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.nio.file.AccessDeniedException;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-    @ExceptionHandler(value =  BizException.class)
-    public ErrorResponse bizExceptionHandler(BizException e){
+    @ExceptionHandler(value = BizException.class)
+    public ErrorResponse bizExceptionHandler(BizException e) {
         ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setCode(e.getCode());
         errorResponse.setMessage(e.getMessage());
         errorResponse.setTrace(e.getStackTrace());
+        e.printStackTrace();
         return errorResponse;
     }
 
@@ -26,6 +30,7 @@ public class GlobalExceptionHandler {
         ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setCode(ExceptionType.INNER_ERROR.getCode());
         errorResponse.setMessage(ExceptionType.INNER_ERROR.getMessage());
+        e.printStackTrace();
         return errorResponse;
     }
 
@@ -39,10 +44,17 @@ public class GlobalExceptionHandler {
         return errorResponse;
     }
 
-//    @ExceptionHandler(value = MethodArgumentNotValidException.class)
-//    @ResponseStatus(HttpStatus.BAD_REQUEST)
-//    public ErrorResponse methodArgumentNotValidExceptionHandler(MethodArgumentNotValidException e) {
-//        List<ErrorResponse> errorResponse = new ArrayList<>();
-//        return null;
-//    }
+    @ExceptionHandler(value = MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public List<ErrorResponse> methodArgumentNotValidExceptionHandler(MethodArgumentNotValidException e) {
+        List<ErrorResponse> errorResponseList = new ArrayList<>();
+        e.getBindingResult().getAllErrors().forEach((error) -> {
+            ErrorResponse errorResponse = new ErrorResponse();
+            errorResponse.setCode(ExceptionType.BAD_REQUEST.getCode());
+            errorResponse.setMessage(error.getDefaultMessage());
+            errorResponseList.add(errorResponse);
+        });
+        e.printStackTrace();
+        return errorResponseList;
+    }
 }

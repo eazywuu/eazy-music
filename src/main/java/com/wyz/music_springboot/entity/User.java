@@ -54,6 +54,7 @@ public class User extends AbstractEntity implements UserDetails {
     public boolean isAccountNonExpired() {
         return true;
     }
+
     /**
      * 当前用户是否锁定
      */
@@ -61,6 +62,7 @@ public class User extends AbstractEntity implements UserDetails {
     public boolean isAccountNonLocked() {
         return !locked;
     }
+
     /**
      * 证书是否过期
      */

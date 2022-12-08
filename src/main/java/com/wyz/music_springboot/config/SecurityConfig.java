@@ -25,7 +25,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     // header属性名 授权
     public static final String HEADER_STRING = "Authorization";
     //
-    public static final String SITE_SETTING_URL = "/users/";
+    public static final String SITE_SETTING_URL = "/users";
 
     UserService userService;
 
