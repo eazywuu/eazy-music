@@ -1,15 +1,15 @@
 package xyz.eazywu.music.handler;
 
-import xyz.eazywu.music.exception.BizException;
-import xyz.eazywu.music.exception.ErrorResponse;
-import xyz.eazywu.music.exception.ExceptionType;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import xyz.eazywu.music.exception.BizException;
+import xyz.eazywu.music.exception.ErrorResponse;
+import xyz.eazywu.music.exception.ExceptionType;
 
-import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
 import java.util.List;
 

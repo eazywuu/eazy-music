@@ -7,21 +7,25 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import xyz.eazywu.music.config.SecurityConfig;
+import xyz.eazywu.music.entity.User;
+import xyz.eazywu.music.service.UserService;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
 
 /**
  * 授权： 通过判断jwt确认是否授权
  */
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
-    public JwtAuthorizationFilter(AuthenticationManager authenticationManager) {
+    UserService userService;
+
+    public JwtAuthorizationFilter(AuthenticationManager authenticationManager, UserService userService) {
         super(authenticationManager);
+        this.userService = userService;
     }
 
     /**
@@ -45,7 +49,10 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
                 .build()
                 .verify(header.replace(SecurityConfig.TOKEN_PREFIX, ""))
                 .getSubject();
-        return username != null ?
-                new UsernamePasswordAuthenticationToken(username, null, new ArrayList<>()) : null;
+        if (username != null) {
+            User user = userService.loadUserByUsername(username);
+            return new UsernamePasswordAuthenticationToken(username, null, user.getAuthorities());
+        }
+        return null;
     }
 }
