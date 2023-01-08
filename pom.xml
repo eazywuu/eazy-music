@@ -19,10 +19,18 @@
         <com.auth0.jwt.version>3.18.2</com.auth0.jwt.version>
         <cn.hutool.version>5.7.3</cn.hutool.version>
         <io.springfox.version>3.0.0</io.springfox.version>
+        <com.github.binarywang.version>4.2.0</com.github.binarywang.version>
     </properties>
 
     <dependencies>
-        <!-- devtools -->
+        <!-- weixin mp接口 -->
+        <dependency>
+            <groupId>com.github.binarywang</groupId>
+            <artifactId>weixin-java-mp</artifactId>
+            <version>${com.github.binarywang.version}</version>
+        </dependency>
+
+        <!-- devtools 热部署 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
@@ -33,6 +41,12 @@
             <groupId>io.springfox</groupId>
             <artifactId>springfox-boot-starter</artifactId>
             <version>${io.springfox.version}</version>
+        </dependency>
+        <!-- hutool工具类 -->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>${cn.hutool.version}</version>
         </dependency>
 
         <!-- spring-security starter -->
@@ -45,12 +59,6 @@
             <groupId>com.auth0</groupId>
             <artifactId>java-jwt</artifactId>
             <version>${com.auth0.jwt.version}</version>
-        </dependency>
-        <!-- hutool工具类 -->
-        <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-all</artifactId>
-            <version>${cn.hutool.version}</version>
         </dependency>
         <!-- validation 基础信息校验 -->
         <dependency>
