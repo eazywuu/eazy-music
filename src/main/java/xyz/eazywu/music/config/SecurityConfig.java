@@ -10,10 +10,15 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import xyz.eazywu.music.exception.RestAuthenticationEntryPoint;
 import xyz.eazywu.music.filter.JwtAuthorizationFilter;
 import xyz.eazywu.music.service.UserService;
 
+/**
+ * @author mycomputer
+ */
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(
@@ -21,31 +26,40 @@ import xyz.eazywu.music.service.UserService;
         securedEnabled = true,
         jsr250Enabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    // 生成jwt的密钥
+    /**
+     * 生成jwt的密钥
+     */
     public static final String SECRET = "EazyMusic";
-    // 到期时间10 days
+    /**
+     * 到期时间10 days
+     */
     public static final long EXPIRATION_TIME = 864000000;
-    // token前缀标注
+    /**
+     * token前缀标注
+     */
     public static final String TOKEN_PREFIX = "Bearer ";
-    // header属性名 授权
+    /**
+     * header属性名 授权
+     */
     public static final String HEADER_STRING = "Authorization";
-    //
-    public static final String CREATE_TOKEN_URL = "/tokens";
+    /**
+     * token请求uri
+     */
+    public static final String CREATE_TOKEN_URI = "/tokens";
 
     UserService userService;
 
     RestAuthenticationEntryPoint restAuthenticationEntryPoint;
 
-    /**
-     * http主要配置
-     */
+    PasswordEncoder passwordEncoder;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // 开启跨域并取消csrf校验
         http.cors().and().csrf().disable()
                 // 鉴定请求时，开放"/users/"的post请求，其他请求需要鉴定
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST, CREATE_TOKEN_URL).permitAll()
+                .antMatchers(HttpMethod.POST, CREATE_TOKEN_URI).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 // 添加用户登录信息filter
@@ -68,7 +82,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         // 指定userService
-        auth.userDetailsService(userService);
+        auth.userDetailsService(userService).passwordEncoder(passwordEncoder);
     }
 
     /**
@@ -79,7 +93,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring().antMatchers("/swagger**/**")
                 .antMatchers("/webjars/**")
                 .antMatchers("/v3/**")
-                .antMatchers("/doc.html");
+                .antMatchers("/doc.html")
+                .antMatchers("/wechat/auth_uri");
     }
 
     @Autowired
@@ -90,5 +105,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     public void setRestAuthenticationEntryPoint(RestAuthenticationEntryPoint restAuthenticationEntryPoint) {
         this.restAuthenticationEntryPoint = restAuthenticationEntryPoint;
+    }
+    @Autowired
+    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
     }
 }

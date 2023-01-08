@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.RestController;
 import xyz.eazywu.music.dto.TokenCreateRequest;
 import xyz.eazywu.music.service.UserService;
 
+/**
+ * @author wyz
+ */
 @Api(tags = "token管理接口")
 @RestController
 @RequestMapping("/tokens")
