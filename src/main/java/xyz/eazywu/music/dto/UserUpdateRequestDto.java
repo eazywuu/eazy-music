@@ -6,10 +6,10 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 /**
- * 更新用户请求数据
+ * 创建用户请求携带的数据格式
  */
 @Data
-public class UserUpdateRequest {
+public class UserUpdateRequestDto {
     @NotBlank(message = "密码不能为空")
     @Size(min = 4, max = 64, message = "密码长度应该在4个字符到64个字符之间")
     private String password;

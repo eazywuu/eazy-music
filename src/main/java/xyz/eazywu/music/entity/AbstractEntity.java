@@ -18,9 +18,15 @@ public abstract class AbstractEntity {
     @GenericGenerator(name = "ksuid", strategy = "xyz.eazywu.music.utils.KsuidIdentifierGenerator")
     private String id;
 
+    /**
+     * 创建时间
+     */
     @CreationTimestamp
     private Date createdTime;
 
+    /**
+     * 更新时间
+     */
     @UpdateTimestamp
     private Date updatedTime;
 }

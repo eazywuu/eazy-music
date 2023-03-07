@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import xyz.eazywu.music.dto.TokenCreateRequest;
+import xyz.eazywu.music.dto.TokenCreateRequestDto;
 import xyz.eazywu.music.service.UserService;
 
 /**
@@ -20,8 +20,8 @@ public class TokenController {
     UserService userService;
 
     @PostMapping
-    public String create(@RequestBody TokenCreateRequest tokenCreateRequest) {
-        return userService.createToken(tokenCreateRequest);
+    public String create(@RequestBody TokenCreateRequestDto tokenCreateRequestDto) {
+        return userService.createToken(tokenCreateRequestDto);
     }
 
     @Autowired

@@ -10,10 +10,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import xyz.eazywu.music.config.SecurityConfig;
-import xyz.eazywu.music.dto.TokenCreateRequest;
-import xyz.eazywu.music.dto.UserCreateRequest;
+import xyz.eazywu.music.dto.TokenCreateRequestDto;
+import xyz.eazywu.music.dto.UserCreateRequestDto;
 import xyz.eazywu.music.dto.UserDto;
-import xyz.eazywu.music.dto.UserUpdateRequest;
+import xyz.eazywu.music.dto.UserUpdateRequestDto;
 import xyz.eazywu.music.entity.User;
 import xyz.eazywu.music.exception.BizException;
 import xyz.eazywu.music.exception.ExceptionType;
@@ -34,9 +34,9 @@ public class UserServiceImpl implements UserService {
     PasswordEncoder passwordEncoder;
 
     @Override
-    public UserDto create(UserCreateRequest userCreateRequest) {
-        checkUsername(userCreateRequest.getUsername());
-        User user = userMapper.createEntity(userCreateRequest);
+    public UserDto create(UserCreateRequestDto userCreateRequestDto) {
+        checkUsername(userCreateRequestDto.getUsername());
+        User user = userMapper.createEntity(userCreateRequestDto);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userMapper.toDto(userRepository.save(user));
     }
@@ -49,9 +49,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto update(String id, UserUpdateRequest userUpdateRequest) {
+    public UserDto update(String id, UserUpdateRequestDto userUpdateRequestDto) {
         User user = checkUserExist(id);
-        return userMapper.toDto(userRepository.save(userMapper.updateEntity(user, userUpdateRequest)));
+        userUpdateRequestDto.setPassword(passwordEncoder.encode(user.getPassword()));
+        return userMapper.toDto(userRepository.save(userMapper.updateEntity(user, userUpdateRequestDto)));
     }
 
     @Override
@@ -75,9 +76,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String createToken(TokenCreateRequest tokenCreateRequest) {
-        User user = loadUserByUsername(tokenCreateRequest.getUsername());
-        if (passwordEncoder.matches(passwordEncoder.encode(tokenCreateRequest.getPassword()), user.getPassword())) {
+    public String createToken(TokenCreateRequestDto tokenCreateRequestDto) {
+        User user = loadUserByUsername(tokenCreateRequestDto.getUsername());
+        // TODO LOGIN ERROR!
+        if (passwordEncoder.matches(passwordEncoder.encode(tokenCreateRequestDto.getPassword()), user.getPassword())) {
             throw new BizException(ExceptionType.USER_PASSWORD_NOT_MATCH);
         }
         if (!user.isEnabled()) {

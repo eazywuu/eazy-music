@@ -10,8 +10,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import xyz.eazywu.music.dto.UserCreateRequest;
-import xyz.eazywu.music.dto.UserUpdateRequest;
+import xyz.eazywu.music.dto.UserCreateRequestDto;
+import xyz.eazywu.music.dto.UserUpdateRequestDto;
 import xyz.eazywu.music.mapper.UserMapper;
 import xyz.eazywu.music.service.UserService;
 import xyz.eazywu.music.vo.UserVo;
@@ -33,8 +33,8 @@ public class UserController {
 
     @PostMapping
     @ApiOperation("create")
-    UserVo create(@Validated @RequestBody UserCreateRequest userCreateRequest) {
-        return userMapper.toVo(userService.create(userCreateRequest));
+    UserVo create(@Validated @RequestBody UserCreateRequestDto userCreateRequestDto) {
+        return userMapper.toVo(userService.create(userCreateRequestDto));
     }
 
     @ApiOperation("get")
@@ -46,8 +46,8 @@ public class UserController {
     @PutMapping("/{id}")
     @ApiOperation("update")
     UserVo update(@PathVariable String id,
-                  @Validated @RequestBody UserUpdateRequest userUpdateRequest) {
-        return userMapper.toVo(userService.update(id, userUpdateRequest));
+                  @Validated @RequestBody UserUpdateRequestDto userUpdateRequestDto) {
+        return userMapper.toVo(userService.update(id, userUpdateRequestDto));
     }
 
     @DeleteMapping("/{id}")

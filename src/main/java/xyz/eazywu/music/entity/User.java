@@ -20,28 +20,52 @@ import java.util.List;
 @NoArgsConstructor
 public class User extends AbstractEntity implements UserDetails {
 
+    /**
+     * 用户名
+     */
     @Column(unique = true)
     private String username;
 
+    /**
+     * 用户昵称
+     */
     private String nickname;
 
+    /**
+     * 用户密码
+     */
     private String password;
 
+    /**
+     * 用户性别
+     */
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
+    /**
+     * 角色：普通用户，管理员
+     */
     @ManyToMany(cascade = {}, fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     private List<Role> roles;
 
+    /**
+     * 账户是否被锁定
+     */
     private Boolean locked = false;
-
+    /**
+     * 账户是否通行
+     */
     private Boolean enabled = true;
-
+    /**
+     * 上次登录ip
+     */
     private String lastLoginIp;
-
+    /**
+     * 上次登录时间
+     */
     private Date lastLoginTime;
 
     @Override

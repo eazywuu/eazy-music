@@ -1,8 +1,8 @@
 package xyz.eazywu.music.mapper;
 
-import xyz.eazywu.music.dto.UserCreateRequest;
+import xyz.eazywu.music.dto.UserCreateRequestDto;
 import xyz.eazywu.music.dto.UserDto;
-import xyz.eazywu.music.dto.UserUpdateRequest;
+import xyz.eazywu.music.dto.UserUpdateRequestDto;
 import xyz.eazywu.music.entity.User;
 import xyz.eazywu.music.vo.UserVo;
 import org.mapstruct.Mapper;
@@ -18,7 +18,7 @@ public interface UserMapper {
 
     UserDto toDto(User user);
 
-    User createEntity(UserCreateRequest userCreateRequest);
+    User createEntity(UserCreateRequestDto userCreateRequestDto);
 
-    User updateEntity(@MappingTarget User user, UserUpdateRequest userUpdateRequest);
+    User updateEntity(@MappingTarget User user, UserUpdateRequestDto userUpdateRequestDto);
 }

@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Entity;
 
 /**
- * @author wyz
+ * 角色实体类
  */
 @Entity
 @Data
@@ -15,7 +15,13 @@ import javax.persistence.Entity;
 @NoArgsConstructor
 public class Role extends AbstractEntity {
 
+    /**
+     * 角色名： ROLE_USER, ROLE_ADMIN
+     */
     private String name;
 
+    /**
+     * 角色: 普通用户，超级管理员
+     */
     private String title;
 }
