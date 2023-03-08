@@ -12,7 +12,7 @@ public interface UserRepository extends JpaRepository<User, String> {
 
     Optional<User> findByUsername(String username);
 
-    User getUserById(String id);
+//    User findUserById(String id);
 
     Page<User> findAll(Pageable pageable);
 

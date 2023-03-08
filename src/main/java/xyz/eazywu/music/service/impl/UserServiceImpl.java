@@ -112,11 +112,11 @@ public class UserServiceImpl implements UserService {
     }
 
     private User checkUserExist(String id) {
-        User user = userRepository.getUserById(id);
-        if (user == null) {
+        Optional<User> user = userRepository.findById(id);
+        if (user.isPresent()) {
             throw new BizException(ExceptionType.USER_NOT_FOUND);
         }
-        return user;
+        return user.get();
     }
 
     @Autowired

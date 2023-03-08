@@ -1,21 +1,23 @@
 package xyz.eazywu.music.controller;
 
-import com.sun.xml.bind.v2.TODO;
+import io.swagger.annotations.Api;
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.bean.WxOAuth2UserInfo;
 import me.chanjar.weixin.common.bean.oauth2.WxOAuth2AccessToken;
 import me.chanjar.weixin.common.error.WxErrorException;
-import me.chanjar.weixin.common.service.WxOAuth2Service;
 import me.chanjar.weixin.mp.api.WxMpService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.websocket.server.PathParam;
 
 /**
  * 微信公众号接口OAuth授权
  */
+@Api(tags = "微信公众号接口")
 @RestController
 @RequestMapping("/wechat")
 public class WechatController {

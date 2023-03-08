@@ -33,6 +33,7 @@ public class UserController {
 
     @PostMapping
     @ApiOperation("create")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     UserVo create(@Validated @RequestBody UserCreateRequestDto userCreateRequestDto) {
         return userMapper.toVo(userService.create(userCreateRequestDto));
     }
@@ -45,6 +46,7 @@ public class UserController {
 
     @PutMapping("/{id}")
     @ApiOperation("update")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     UserVo update(@PathVariable String id,
                   @Validated @RequestBody UserUpdateRequestDto userUpdateRequestDto) {
         return userMapper.toVo(userService.update(id, userUpdateRequestDto));
@@ -52,6 +54,7 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     @ApiOperation("delete")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     void delete(@PathVariable String id) {
         userService.delete(id);
     }

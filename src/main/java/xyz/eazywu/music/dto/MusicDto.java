@@ -1,8 +1,6 @@
 package xyz.eazywu.music.dto;
 
 import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 import xyz.eazywu.music.enums.MusicStatus;
 
 import java.util.Date;

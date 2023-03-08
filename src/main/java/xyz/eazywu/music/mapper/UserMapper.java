@@ -12,7 +12,6 @@ import org.mapstruct.MappingTarget;
  * vo，dto，entity转换
  */
 @Mapper(componentModel = "spring")
-//@Component
 public interface UserMapper {
     UserVo toVo(UserDto userDto);
 

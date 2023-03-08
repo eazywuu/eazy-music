@@ -20,4 +20,8 @@ public class MusicVo {
      * 音乐上架状态
      */
     private MusicStatus status;
+
+    private Date createdTime;
+
+    private Date updatedTime;
 }
