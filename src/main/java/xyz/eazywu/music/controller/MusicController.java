@@ -10,11 +10,11 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import xyz.eazywu.music.dto.MusicCreateRequestDto;
-import xyz.eazywu.music.dto.MusicUpdateRequestDto;
+import xyz.eazywu.music.object.request.MusicCreateRequestDto;
+import xyz.eazywu.music.object.request.MusicUpdateRequestDto;
 import xyz.eazywu.music.mapper.MusicMapper;
 import xyz.eazywu.music.service.MusicService;
-import xyz.eazywu.music.vo.MusicVo;
+import xyz.eazywu.music.object.vo.MusicVo;
 
 @Api(tags = "音乐管理接口")
 @RestController
@@ -32,6 +32,7 @@ public class MusicController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     MusicVo update(@PathVariable String id,
                    @Validated @RequestBody MusicUpdateRequestDto musicUpdateRequestDto) {
         return musicMapper.toVo(musicService.update(id, musicUpdateRequestDto));

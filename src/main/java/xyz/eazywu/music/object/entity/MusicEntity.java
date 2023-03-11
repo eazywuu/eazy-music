@@ -1,9 +1,9 @@
-package xyz.eazywu.music.entity;
+package xyz.eazywu.music.object.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import xyz.eazywu.music.enums.MusicStatus;
+import xyz.eazywu.music.enums.MusicStatusEnum;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -16,7 +16,7 @@ import javax.persistence.Enumerated;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Music extends AbstractEntity{
+public class MusicEntity extends AbstractEntity{
     /**
      * 音乐名
      */
@@ -29,5 +29,5 @@ public class Music extends AbstractEntity{
      * 音乐上架状态
      */
     @Enumerated(EnumType.STRING)
-    private MusicStatus status;
+    private MusicStatusEnum status;
 }

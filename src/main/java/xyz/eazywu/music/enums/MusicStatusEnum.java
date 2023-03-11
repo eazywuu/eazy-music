@@ -1,9 +1,9 @@
 package xyz.eazywu.music.enums;
 
 /**
- * 音乐上架状态枚举
+ * 音乐上架状态
  */
-public enum MusicStatus {
+public enum MusicStatusEnum {
     /**
      * 草稿
      */

@@ -1,12 +1,12 @@
-package xyz.eazywu.music.dto;
+package xyz.eazywu.music.object.vo;
 
 import lombok.Data;
-import xyz.eazywu.music.enums.MusicStatus;
+import xyz.eazywu.music.enums.MusicStatusEnum;
 
 import java.util.Date;
 
 @Data
-public class MusicDto {
+public class MusicVo {
     private String id;
     /**
      * 音乐名
@@ -19,13 +19,9 @@ public class MusicDto {
     /**
      * 音乐上架状态
      */
-    private MusicStatus status;
-    /**
-     * 创建时间
-     */
+    private MusicStatusEnum status;
+
     private Date createdTime;
-    /**
-     * 更新时间
-     */
+
     private Date updatedTime;
 }

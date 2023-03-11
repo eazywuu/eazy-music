@@ -1,13 +1,12 @@
-package xyz.eazywu.music.dto;
+package xyz.eazywu.music.object.vo;
 
 import lombok.Data;
 
 @Data
-public class RoleDto {
+public class RoleVo {
     private String id;
 
     private String name;
 
     public String title;
-
 }

@@ -1,4 +1,4 @@
-CREATE TABLE role
+CREATE TABLE roleEntity
 (
     id VARCHAR(32) NOT NULL
         PRIMARY KEY COMMENT '角色ID',

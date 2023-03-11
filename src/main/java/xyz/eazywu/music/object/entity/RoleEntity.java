@@ -1,4 +1,4 @@
-package xyz.eazywu.music.entity;
+package xyz.eazywu.music.object.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,7 +13,7 @@ import javax.persistence.Entity;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Role extends AbstractEntity {
+public class RoleEntity extends AbstractEntity {
 
     /**
      * 角色名： ROLE_USER, ROLE_ADMIN

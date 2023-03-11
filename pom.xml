@@ -3,10 +3,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.wyz</groupId>
-    <artifactId>eazy-music</artifactId>
+    <artifactId>eazy-musicEntity</artifactId>
     <version>0.0.1</version>
-    <name>eazy-music</name>
-    <description>eazy-music 后台服务</description>
+    <name>eazy-musicEntity</name>
+    <description>eazy-musicEntity 后台服务</description>
 
     <properties>
         <java.version>1.8</java.version>
@@ -162,7 +162,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>2.6.1</version>
                 <configuration>
-                    <mainClass>xyz.eazywu.music.MusicSpringbootApplication</mainClass>
+                    <mainClass>xyz.eazywu.musicEntity.MusicSpringbootApplication</mainClass>
                     <fork>true</fork>
                 </configuration>
                 <executions>

@@ -1,4 +1,4 @@
-package xyz.eazywu.music.dto;
+package xyz.eazywu.music.object.request;
 
 import lombok.Data;
 

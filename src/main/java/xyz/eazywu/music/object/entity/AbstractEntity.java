@@ -1,4 +1,4 @@
-package xyz.eazywu.music.entity;
+package xyz.eazywu.music.object.entity;
 
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;

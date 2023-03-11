@@ -1,7 +1,7 @@
-package xyz.eazywu.music.vo;
+package xyz.eazywu.music.object.vo;
 
 import lombok.Data;
-import xyz.eazywu.music.enums.Gender;
+import xyz.eazywu.music.enums.GenderEnum;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ public class UserVo {
 
     private List<RoleVo> roles;
 
-    private Gender gender;
+    private GenderEnum genderEnum;
 
     private Boolean locked;
 

@@ -10,11 +10,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import xyz.eazywu.music.config.SecurityConfig;
-import xyz.eazywu.music.dto.TokenCreateRequestDto;
-import xyz.eazywu.music.dto.UserCreateRequestDto;
-import xyz.eazywu.music.dto.UserDto;
-import xyz.eazywu.music.dto.UserUpdateRequestDto;
-import xyz.eazywu.music.entity.User;
+import xyz.eazywu.music.object.request.TokenCreateRequestDto;
+import xyz.eazywu.music.object.request.UserCreateRequestDto;
+import xyz.eazywu.music.object.dto.UserDto;
+import xyz.eazywu.music.object.request.UserUpdateRequestDto;
+import xyz.eazywu.music.object.entity.UserEntity;
 import xyz.eazywu.music.exception.BizException;
 import xyz.eazywu.music.exception.ExceptionType;
 import xyz.eazywu.music.mapper.UserMapper;
@@ -36,29 +36,29 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto create(UserCreateRequestDto userCreateRequestDto) {
         checkUsername(userCreateRequestDto.getUsername());
-        User user = userMapper.createEntity(userCreateRequestDto);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userMapper.toDto(userRepository.save(user));
+        UserEntity userEntity = userMapper.createEntity(userCreateRequestDto);
+        userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
+        return userMapper.toDto(userRepository.save(userEntity));
     }
 
 
     @Override
     public UserDto get(String id) {
-        User user = checkUserExist(id);
-        return userMapper.toDto(user);
+        UserEntity userEntity = checkUserExist(id);
+        return userMapper.toDto(userEntity);
     }
 
     @Override
     public UserDto update(String id, UserUpdateRequestDto userUpdateRequestDto) {
-        User user = checkUserExist(id);
-        userUpdateRequestDto.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userMapper.toDto(userRepository.save(userMapper.updateEntity(user, userUpdateRequestDto)));
+        UserEntity userEntity = checkUserExist(id);
+        userUpdateRequestDto.setPassword(passwordEncoder.encode(userEntity.getPassword()));
+        return userMapper.toDto(userRepository.save(userMapper.updateEntity(userEntity, userUpdateRequestDto)));
     }
 
     @Override
     public void delete(String id) {
-        User user = checkUserExist(id);
-        userRepository.delete(user);
+        UserEntity userEntity = checkUserExist(id);
+        userRepository.delete(userEntity);
     }
 
     @Override
@@ -67,8 +67,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User loadUserByUsername(String username) {
-        Optional<User> user = userRepository.findByUsername(username);
+    public UserEntity loadUserByUsername(String username) {
+        Optional<UserEntity> user = userRepository.findByUsername(username);
         if (!user.isPresent()) {
             throw new BizException(ExceptionType.USER_NOT_FOUND);
         }
@@ -77,20 +77,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String createToken(TokenCreateRequestDto tokenCreateRequestDto) {
-        User user = loadUserByUsername(tokenCreateRequestDto.getUsername());
+        UserEntity userEntity = loadUserByUsername(tokenCreateRequestDto.getUsername());
         // TODO LOGIN ERROR!
-        if (passwordEncoder.matches(passwordEncoder.encode(tokenCreateRequestDto.getPassword()), user.getPassword())) {
+        if (passwordEncoder.matches(passwordEncoder.encode(tokenCreateRequestDto.getPassword()), userEntity.getPassword())) {
             throw new BizException(ExceptionType.USER_PASSWORD_NOT_MATCH);
         }
-        if (!user.isEnabled()) {
+        if (!userEntity.isEnabled()) {
             throw new BizException(ExceptionType.USER_NOT_ENABLED);
         }
-        if (!user.isAccountNonLocked()) {
+        if (!userEntity.isAccountNonLocked()) {
             throw new BizException(ExceptionType.USER_LOCKED);
         }
         return JWT.create()
                 // 主题：用户名
-                .withSubject(user.getUsername())
+                .withSubject(userEntity.getUsername())
                 // 过期时间：当前时间 + 有效时间
                 .withExpiresAt(new Date(System.currentTimeMillis() + SecurityConfig.EXPIRATION_TIME))
                 // 签名：使用签名算法对密钥加密
@@ -100,19 +100,19 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = loadUserByUsername(authentication.getName());
-        return userMapper.toDto(user);
+        UserEntity userEntity = loadUserByUsername(authentication.getName());
+        return userMapper.toDto(userEntity);
     }
 
     private void checkUsername(String username) {
-        Optional<User> user = userRepository.findByUsername(username);
+        Optional<UserEntity> user = userRepository.findByUsername(username);
         if (user.isPresent()) {
             throw new BizException(ExceptionType.USER_NAME_DUPLICATE);
         }
     }
 
-    private User checkUserExist(String id) {
-        Optional<User> user = userRepository.findById(id);
+    private UserEntity checkUserExist(String id) {
+        Optional<UserEntity> user = userRepository.findById(id);
         if (user.isPresent()) {
             throw new BizException(ExceptionType.USER_NOT_FOUND);
         }

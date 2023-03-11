@@ -7,7 +7,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import xyz.eazywu.music.config.SecurityConfig;
-import xyz.eazywu.music.entity.User;
+import xyz.eazywu.music.object.entity.UserEntity;
 import xyz.eazywu.music.service.UserService;
 
 import javax.servlet.FilterChain;
@@ -50,8 +50,8 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
                 .verify(header.replace(SecurityConfig.TOKEN_PREFIX, ""))
                 .getSubject();
         if (username != null) {
-            User user = userService.loadUserByUsername(username);
-            return new UsernamePasswordAuthenticationToken(username, null, user.getAuthorities());
+            UserEntity userEntity = userService.loadUserByUsername(username);
+            return new UsernamePasswordAuthenticationToken(username, null, userEntity.getAuthorities());
         }
         return null;
     }

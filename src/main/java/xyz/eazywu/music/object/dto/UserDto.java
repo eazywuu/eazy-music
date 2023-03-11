@@ -1,7 +1,7 @@
-package xyz.eazywu.music.dto;
+package xyz.eazywu.music.object.dto;
 
-import xyz.eazywu.music.enums.Gender;
-import xyz.eazywu.music.vo.RoleVo;
+import xyz.eazywu.music.enums.GenderEnum;
+import xyz.eazywu.music.object.vo.RoleVo;
 import lombok.Data;
 
 import java.util.Date;
@@ -17,7 +17,7 @@ public class UserDto {
 
     private List<RoleVo> roles;
 
-    private Gender gender;
+    private GenderEnum genderEnum;
 
     private Boolean locked;
 

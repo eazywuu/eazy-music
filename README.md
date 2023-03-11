@@ -1,4 +1,4 @@
-# eazy-music
+# eazy-musicEntity
 
 音乐后台服务
 

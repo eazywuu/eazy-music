@@ -10,15 +10,15 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import xyz.eazywu.music.dto.UserCreateRequestDto;
-import xyz.eazywu.music.dto.UserUpdateRequestDto;
 import xyz.eazywu.music.mapper.UserMapper;
+import xyz.eazywu.music.object.request.UserCreateRequestDto;
+import xyz.eazywu.music.object.request.UserUpdateRequestDto;
+import xyz.eazywu.music.object.vo.UserVo;
 import xyz.eazywu.music.service.UserService;
-import xyz.eazywu.music.vo.UserVo;
 
+@Api(tags = "user管理接口")
 @RestController
 @RequestMapping("/users")
-@Api(tags = "user管理接口")
 public class UserController {
 
     UserService userService;

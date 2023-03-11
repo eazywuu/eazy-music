@@ -1,9 +1,9 @@
 package xyz.eazywu.music.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import xyz.eazywu.music.entity.Music;
+import xyz.eazywu.music.object.entity.MusicEntity;
 
-public interface MusicRepository extends JpaRepository<Music, String> {
-    Music getMusicById(String id);
+public interface MusicRepository extends JpaRepository<MusicEntity, String> {
+    MusicEntity getMusicById(String id);
 
 }

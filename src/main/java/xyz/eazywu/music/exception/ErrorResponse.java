@@ -2,6 +2,9 @@ package xyz.eazywu.music.exception;
 
 import lombok.Data;
 
+/**
+ * 异常响应体
+ */
 @Data
 public class ErrorResponse {
     private Integer code;

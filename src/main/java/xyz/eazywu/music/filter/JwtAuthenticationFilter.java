@@ -9,7 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import xyz.eazywu.music.config.SecurityConfig;
-import xyz.eazywu.music.entity.User;
+import xyz.eazywu.music.object.entity.UserEntity;
 import xyz.eazywu.music.exception.BizException;
 import xyz.eazywu.music.exception.ExceptionType;
 
@@ -38,13 +38,13 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         try {
             // get到request中的json数据，映射到User.class生成user
-            User user = new ObjectMapper().readValue(request.getInputStream(), User.class);
+            UserEntity userEntity = new ObjectMapper().readValue(request.getInputStream(), UserEntity.class);
             // set到authenticationManager进行鉴定
             return authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
-                            user.getUsername(),
-                            user.getPassword(),
-                            user.getAuthorities()
+                            userEntity.getUsername(),
+                            userEntity.getPassword(),
+                            userEntity.getAuthorities()
                     )
             );
         } catch (IOException e) {
@@ -59,7 +59,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         String token = JWT.create()
                 // 主题：用户名
-                .withSubject(((User) authResult.getPrincipal()).getUsername())
+                .withSubject(((UserEntity) authResult.getPrincipal()).getUsername())
                 // 过期时间：当前时间 + 有效时间
                 .withExpiresAt(new Date(System.currentTimeMillis() + SecurityConfig.EXPIRATION_TIME))
                 // 签名：使用签名算法对密钥加密

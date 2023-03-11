@@ -18,6 +18,10 @@ import java.util.List;
  */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+    /**
+     * 自定义异常处理器
+     * code: 500
+     */
     @ExceptionHandler(value = BizException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse bizExceptionHandler(BizException e) {
@@ -29,16 +33,10 @@ public class GlobalExceptionHandler {
         return errorResponse;
     }
 
-    @ExceptionHandler(value = Exception.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ErrorResponse exceptionHandler(Exception e) {
-        ErrorResponse errorResponse = new ErrorResponse();
-        errorResponse.setCode(ExceptionType.INNER_ERROR.getCode());
-        errorResponse.setMessage(ExceptionType.INNER_ERROR.getMessage());
-        e.printStackTrace();
-        return errorResponse;
-    }
-
+    /**
+     * 访问权限异常处理器
+     * code: 403
+     */
     @ExceptionHandler(value = AccessDeniedException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public ErrorResponse accessDeniedHandler(Exception e) {
@@ -49,10 +47,17 @@ public class GlobalExceptionHandler {
         return errorResponse;
     }
 
+    /**
+     * 请求错误异常处理器
+     * code: 400
+     */
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public List<ErrorResponse> methodArgumentNotValidExceptionHandler(MethodArgumentNotValidException e) {
         List<ErrorResponse> errorResponseList = new ArrayList<>();
+        /**
+         * 出现多个异常时的处理
+         */
         e.getBindingResult().getAllErrors().forEach((error) -> {
             ErrorResponse errorResponse = new ErrorResponse();
             errorResponse.setCode(ExceptionType.BAD_REQUEST.getCode());
@@ -61,5 +66,18 @@ public class GlobalExceptionHandler {
         });
         e.printStackTrace();
         return errorResponseList;
+    }
+
+    /**
+     * 其他异常处理器
+     */
+    @ExceptionHandler(value = Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorResponse exceptionHandler(Exception e) {
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setCode(ExceptionType.INNER_ERROR.getCode());
+        errorResponse.setMessage(ExceptionType.INNER_ERROR.getMessage());
+        e.printStackTrace();
+        return errorResponse;
     }
 }

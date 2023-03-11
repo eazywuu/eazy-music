@@ -1,4 +1,4 @@
-CREATE TABLE music
+CREATE TABLE musicEntity
 (
     id VARCHAR(32) NOT NULL
         PRIMARY KEY COMMENT '音乐ID',

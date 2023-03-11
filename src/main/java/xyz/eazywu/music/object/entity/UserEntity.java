@@ -1,4 +1,4 @@
-package xyz.eazywu.music.entity;
+package xyz.eazywu.music.object.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import xyz.eazywu.music.enums.Gender;
+import xyz.eazywu.music.enums.GenderEnum;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class User extends AbstractEntity implements UserDetails {
+public class UserEntity extends AbstractEntity implements UserDetails {
 
     /**
      * 用户名
@@ -40,7 +40,7 @@ public class User extends AbstractEntity implements UserDetails {
      * 用户性别
      */
     @Enumerated(EnumType.STRING)
-    private Gender gender;
+    private GenderEnum genderEnum;
 
     /**
      * 角色：普通用户，管理员
@@ -49,7 +49,7 @@ public class User extends AbstractEntity implements UserDetails {
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
-    private List<Role> roles;
+    private List<RoleEntity> roleEntities;
 
     /**
      * 账户是否被锁定
@@ -71,7 +71,7 @@ public class User extends AbstractEntity implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
-        roles.forEach((role) -> authorities.add(new SimpleGrantedAuthority(role.getName())));
+        roleEntities.forEach((roleEntity) -> authorities.add(new SimpleGrantedAuthority(roleEntity.getName())));
         return authorities;
     }
 

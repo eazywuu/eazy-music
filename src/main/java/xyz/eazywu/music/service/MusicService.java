@@ -2,9 +2,9 @@ package xyz.eazywu.music.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import xyz.eazywu.music.dto.MusicCreateRequestDto;
-import xyz.eazywu.music.dto.MusicDto;
-import xyz.eazywu.music.dto.MusicUpdateRequestDto;
+import xyz.eazywu.music.object.request.MusicCreateRequestDto;
+import xyz.eazywu.music.object.dto.MusicDto;
+import xyz.eazywu.music.object.request.MusicUpdateRequestDto;
 
 public interface MusicService {
     MusicDto create(MusicCreateRequestDto musicCreateRequestDto);

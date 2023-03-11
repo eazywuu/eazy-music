@@ -6,11 +6,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import xyz.eazywu.music.dto.TokenCreateRequestDto;
+import xyz.eazywu.music.object.request.TokenCreateRequestDto;
 import xyz.eazywu.music.service.UserService;
 
 /**
- * @author wyz
+ * token管理
  */
 @Api(tags = "token管理接口")
 @RestController

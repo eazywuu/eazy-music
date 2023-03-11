@@ -1,9 +1,9 @@
 package xyz.eazywu.music.enums;
 
 /**
- * 性别枚举
+ * 性别
  */
-public enum Gender {
+public enum GenderEnum {
     /**
      * 女
      */

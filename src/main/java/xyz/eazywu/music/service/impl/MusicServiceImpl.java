@@ -4,11 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import xyz.eazywu.music.dto.MusicCreateRequestDto;
-import xyz.eazywu.music.dto.MusicDto;
-import xyz.eazywu.music.dto.MusicUpdateRequestDto;
-import xyz.eazywu.music.entity.Music;
-import xyz.eazywu.music.enums.MusicStatus;
+import xyz.eazywu.music.object.request.MusicCreateRequestDto;
+import xyz.eazywu.music.object.dto.MusicDto;
+import xyz.eazywu.music.object.request.MusicUpdateRequestDto;
+import xyz.eazywu.music.object.entity.MusicEntity;
+import xyz.eazywu.music.enums.MusicStatusEnum;
 import xyz.eazywu.music.exception.BizException;
 import xyz.eazywu.music.exception.ExceptionType;
 import xyz.eazywu.music.mapper.MusicMapper;
@@ -26,15 +26,15 @@ public class MusicServiceImpl implements MusicService {
 
     @Override
     public MusicDto create(MusicCreateRequestDto musicCreateRequestDto) {
-        Music music = musicMapper.createEntity(musicCreateRequestDto);
-        music.setStatus(MusicStatus.DRAFT);
-        return musicMapper.toDto(musicRepository.save(music));
+        MusicEntity musicEntity = musicMapper.createEntity(musicCreateRequestDto);
+        musicEntity.setStatus(MusicStatusEnum.DRAFT);
+        return musicMapper.toDto(musicRepository.save(musicEntity));
     }
 
     @Override
     public MusicDto update(String id, MusicUpdateRequestDto musicUpdateRequestDto) {
-        Music music = checkMusicExist(id);
-        return musicMapper.toDto(musicRepository.save(musicMapper.updateEntity(music, musicUpdateRequestDto)));
+        MusicEntity musicEntity = checkMusicExist(id);
+        return musicMapper.toDto(musicRepository.save(musicMapper.updateEntity(musicEntity, musicUpdateRequestDto)));
     }
 
     @Override
@@ -44,20 +44,20 @@ public class MusicServiceImpl implements MusicService {
 
     @Override
     public void publish(String id) {
-        Music music = checkMusicExist(id);
-        music.setStatus(MusicStatus.PUBLISHED);
-        musicRepository.save(music);
+        MusicEntity musicEntity = checkMusicExist(id);
+        musicEntity.setStatus(MusicStatusEnum.PUBLISHED);
+        musicRepository.save(musicEntity);
     }
 
     @Override
     public void close(String id) {
-        Music music = checkMusicExist(id);
-        music.setStatus(MusicStatus.CLOSED);
-        musicRepository.save(music);
+        MusicEntity musicEntity = checkMusicExist(id);
+        musicEntity.setStatus(MusicStatusEnum.CLOSED);
+        musicRepository.save(musicEntity);
     }
 
-    private Music checkMusicExist(String id) {
-        Optional<Music> music = musicRepository.findById(id);
+    private MusicEntity checkMusicExist(String id) {
+        Optional<MusicEntity> music = musicRepository.findById(id);
         if (!music.isPresent()) {
             throw new BizException(ExceptionType.MUSIC_NOT_FOUND);
         }

@@ -1,4 +1,4 @@
-CREATE TABLE user
+CREATE TABLE userEntity
 (
     id VARCHAR(32) NOT NULL
         PRIMARY KEY COMMENT '用户ID',
