@@ -2,22 +2,21 @@ package xyz.eazywu.music.service.impl;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import xyz.eazywu.music.config.SecurityConfig;
-import xyz.eazywu.music.dto.TokenCreateRequest;
-import xyz.eazywu.music.dto.UserCreateRequest;
-import xyz.eazywu.music.dto.UserDto;
-import xyz.eazywu.music.dto.UserUpdateRequest;
-import xyz.eazywu.music.entity.User;
 import xyz.eazywu.music.exception.BizException;
-import xyz.eazywu.music.exception.ExceptionType;
+import xyz.eazywu.music.exception.ResultType;
 import xyz.eazywu.music.mapper.UserMapper;
+import xyz.eazywu.music.object.dto.UserDto;
+import xyz.eazywu.music.object.entity.User;
+import xyz.eazywu.music.object.request.TokenCreateReq;
+import xyz.eazywu.music.object.request.UserCreateReq;
+import xyz.eazywu.music.object.request.UserUpdateReq;
 import xyz.eazywu.music.repository.UserRepository;
 import xyz.eazywu.music.service.UserService;
 
@@ -25,18 +24,20 @@ import java.util.Date;
 import java.util.Optional;
 
 @Service
-public class UserServiceImpl implements UserService {
+@Slf4j
+@RequiredArgsConstructor
+public class UserServiceImpl extends BaseService implements UserService {
 
-    UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    UserMapper userMapper;
+    private final UserMapper userMapper;
     // 密码加密器
-    PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
-    public UserDto create(UserCreateRequest userCreateRequest) {
-        checkUsername(userCreateRequest.getUsername());
-        User user = userMapper.createEntity(userCreateRequest);
+    public UserDto create(UserCreateReq userCreateReq) {
+        checkUsername(userCreateReq.getUsername());
+        User user = userMapper.createEntity(userCreateReq);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userMapper.toDto(userRepository.save(user));
     }
@@ -44,20 +45,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto get(String id) {
-        User user = checkUserExist(id);
-        return userMapper.toDto(user);
+        return userMapper.toDto(checkUserExist(id));
     }
 
     @Override
-    public UserDto update(String id, UserUpdateRequest userUpdateRequest) {
+    public UserDto update(String id, UserUpdateReq userUpdateReq) {
         User user = checkUserExist(id);
-        return userMapper.toDto(userRepository.save(userMapper.updateEntity(user, userUpdateRequest)));
+        userUpdateReq.setPassword(passwordEncoder.encode(user.getPassword()));
+        return userMapper.toDto(userRepository.save(userMapper.updateEntity(user, userUpdateReq)));
     }
 
     @Override
     public void delete(String id) {
-        User user = checkUserExist(id);
-        userRepository.delete(user);
+        userRepository.delete(checkUserExist(id));
     }
 
     @Override
@@ -65,26 +65,25 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll(pageable).map(userMapper::toDto);
     }
 
+    /**
+     * 通过用户名加载用户，生成token时使用，用户名从请求或者上下文获取
+     */
     @Override
     public User loadUserByUsername(String username) {
-        Optional<User> user = userRepository.findByUsername(username);
-        if (!user.isPresent()) {
-            throw new BizException(ExceptionType.USER_NOT_FOUND);
-        }
-        return user.get();
+        return super.loadUserByUsername(username);
     }
 
     @Override
-    public String createToken(TokenCreateRequest tokenCreateRequest) {
-        User user = loadUserByUsername(tokenCreateRequest.getUsername());
-        if (passwordEncoder.matches(passwordEncoder.encode(tokenCreateRequest.getPassword()), user.getPassword())) {
-            throw new BizException(ExceptionType.USER_PASSWORD_NOT_MATCH);
+    public String createToken(TokenCreateReq tokenCreateReq) {
+        User user = loadUserByUsername(tokenCreateReq.getUsername());
+        if (!passwordEncoder.matches(tokenCreateReq.getPassword(), user.getPassword())) {
+            throw new BizException(ResultType.USER_PASSWORD_NOT_MATCH);
         }
         if (!user.isEnabled()) {
-            throw new BizException(ExceptionType.USER_NOT_ENABLED);
+            throw new BizException(ResultType.USER_NOT_ENABLED);
         }
         if (!user.isAccountNonLocked()) {
-            throw new BizException(ExceptionType.USER_LOCKED);
+            throw new BizException(ResultType.USER_LOCKED);
         }
         return JWT.create()
                 // 主题：用户名
@@ -95,42 +94,26 @@ public class UserServiceImpl implements UserService {
                 .sign(Algorithm.HMAC512(SecurityConfig.SECRET.getBytes()));
     }
 
+    /**
+     * 通过上下文获取用户名，
+     */
     @Override
     public UserDto getCurrentUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = loadUserByUsername(authentication.getName());
-        return userMapper.toDto(user);
+        return userMapper.toDto(super.getCurrentUserEntity());
     }
 
     private void checkUsername(String username) {
         Optional<User> user = userRepository.findByUsername(username);
         if (user.isPresent()) {
-            throw new BizException(ExceptionType.USER_NAME_DUPLICATE);
+            throw new BizException(ResultType.USER_NAME_DUPLICATE);
         }
     }
 
     private User checkUserExist(String id) {
-        User user = userRepository.getUserById(id);
-        if (user == null) {
-            throw new BizException(ExceptionType.USER_NOT_FOUND);
+        Optional<User> user = userRepository.findById(id);
+        if (!user.isPresent()) {
+            throw new BizException(ResultType.USER_NOT_FOUND);
         }
-        return user;
+        return user.get();
     }
-
-    @Autowired
-    private void setUserRepository(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
-    @Autowired
-    private void setUserMapper(UserMapper userMapper) {
-        this.userMapper = userMapper;
-    }
-
-    @Autowired
-    private void setPasswordEncoder(PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
-    }
-
-
 }

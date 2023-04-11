@@ -30,8 +30,8 @@ public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
         ErrorResponse errorResponse = new ErrorResponse();
         // 设置响应体内容 json内部code字段
-        errorResponse.setCode(ExceptionType.UNAUTHORIZED.getCode());
-        errorResponse.setMessage(ExceptionType.UNAUTHORIZED.getMessage());
+        errorResponse.setCode(ResultType.UNAUTHORIZED.getCode());
+        errorResponse.setMessage(ResultType.UNAUTHORIZED.getMessage());
         response.getWriter().println(JSONUtil.parse(errorResponse));
         response.getWriter().flush();
     }

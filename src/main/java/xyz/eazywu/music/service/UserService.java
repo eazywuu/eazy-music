@@ -3,19 +3,19 @@ package xyz.eazywu.music.service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import xyz.eazywu.music.dto.TokenCreateRequest;
-import xyz.eazywu.music.dto.UserCreateRequest;
-import xyz.eazywu.music.dto.UserDto;
-import xyz.eazywu.music.dto.UserUpdateRequest;
-import xyz.eazywu.music.entity.User;
+import xyz.eazywu.music.object.entity.User;
+import xyz.eazywu.music.object.request.TokenCreateReq;
+import xyz.eazywu.music.object.request.UserCreateReq;
+import xyz.eazywu.music.object.dto.UserDto;
+import xyz.eazywu.music.object.request.UserUpdateReq;
 
 public interface UserService extends UserDetailsService {
 
-    UserDto create(UserCreateRequest userCreateRequest);
+    UserDto create(UserCreateReq userCreateReq);
 
     UserDto get(String id);
 
-    UserDto update(String id, UserUpdateRequest userUpdateRequest);
+    UserDto update(String id, UserUpdateReq userUpdateReq);
 
     void delete(String id);
 
@@ -23,7 +23,7 @@ public interface UserService extends UserDetailsService {
 
     User loadUserByUsername(String username);
 
-    String createToken(TokenCreateRequest tokenCreateRequest);
+    String createToken(TokenCreateReq tokenCreateReq);
 
     UserDto getCurrentUser();
 }

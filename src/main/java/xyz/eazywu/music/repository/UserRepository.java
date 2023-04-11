@@ -1,6 +1,6 @@
 package xyz.eazywu.music.repository;
 
-import xyz.eazywu.music.entity.User;
+import xyz.eazywu.music.object.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,7 +12,7 @@ public interface UserRepository extends JpaRepository<User, String> {
 
     Optional<User> findByUsername(String username);
 
-    User getUserById(String id);
+//    User findUserById(String id);
 
     Page<User> findAll(Pageable pageable);
 

@@ -14,6 +14,8 @@ public class CrossConfig {
     @Bean
     public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+
         //允许所有域名进行跨域调用
         config.addAllowedOriginPattern("*");
         //允许跨越发送cookie
@@ -23,7 +25,7 @@ public class CrossConfig {
         //允许所有请求方法跨域调用
         config.addAllowedMethod("*");
         config.addExposedHeader("*");
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }

@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * @author wyz
+ * 连接wechat接口
  */
 @Configuration
 public class WechatConfig {

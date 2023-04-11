@@ -1,10 +1,10 @@
 package xyz.eazywu.music.mapper;
 
-import xyz.eazywu.music.dto.UserCreateRequest;
-import xyz.eazywu.music.dto.UserDto;
-import xyz.eazywu.music.dto.UserUpdateRequest;
-import xyz.eazywu.music.entity.User;
-import xyz.eazywu.music.vo.UserVo;
+import xyz.eazywu.music.object.entity.User;
+import xyz.eazywu.music.object.request.UserCreateReq;
+import xyz.eazywu.music.object.dto.UserDto;
+import xyz.eazywu.music.object.request.UserUpdateReq;
+import xyz.eazywu.music.object.vo.UserVo;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 
@@ -12,13 +12,12 @@ import org.mapstruct.MappingTarget;
  * vo，dto，entity转换
  */
 @Mapper(componentModel = "spring")
-//@Component
 public interface UserMapper {
     UserVo toVo(UserDto userDto);
 
     UserDto toDto(User user);
 
-    User createEntity(UserCreateRequest userCreateRequest);
+    User createEntity(UserCreateReq userCreateReq);
 
-    User updateEntity(@MappingTarget User user, UserUpdateRequest userUpdateRequest);
+    User updateEntity(@MappingTarget User user, UserUpdateReq userUpdateReq);
 }

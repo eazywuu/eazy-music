@@ -29,6 +29,17 @@
             <artifactId>weixin-java-mp</artifactId>
             <version>${com.github.binarywang.version}</version>
         </dependency>
+        <!-- 腾讯云对象存储cos -->
+        <dependency>
+            <groupId>com.qcloud</groupId>
+            <artifactId>cos-sts_api</artifactId>
+            <version>3.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.qcloud</groupId>
+            <artifactId>cos_api</artifactId>
+            <version>5.6.68</version>
+        </dependency>
 
         <!-- devtools 热部署 -->
         <dependency>
@@ -53,6 +64,10 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
         </dependency>
         <!-- jwt -->
         <dependency>
@@ -100,7 +115,7 @@
             <artifactId>ksuid</artifactId>
             <version>${com.github.ksuid.version}</version>
         </dependency>
-        <!-- map-struct 模型转换器 -->
+        <!-- map-struct vo,dto,entity模型转换器 -->
         <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
