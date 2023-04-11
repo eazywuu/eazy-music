@@ -1,6 +1,7 @@
 package xyz.eazywu.music.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -12,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import xyz.eazywu.music.exception.RestAuthenticationEntryPoint;
+import xyz.eazywu.music.filter.JwtAuthenticationFilter;
 import xyz.eazywu.music.filter.JwtAuthorizationFilter;
 import xyz.eazywu.music.service.UserService;
 
@@ -45,6 +47,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      * token请求uri
      */
     public static final String CREATE_TOKEN_URI = "/tokens";
+    /**
+     * 网站配置请求uri
+     */
+    public static final String SITE_SETTING_URI = "/settings/site";
 
     UserService userService;
 
@@ -59,10 +65,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // 鉴定请求时，开放"/users/"的post请求，其他请求需要鉴定
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, CREATE_TOKEN_URI).permitAll()
+                .antMatchers(HttpMethod.GET, SITE_SETTING_URI).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 // 添加用户登录信息filter
-//                .addFilter(new JwtAuthenticationFilter(authenticationManager()))
+//                .addFilterAt(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 // 添加token filter
                 .addFilter(new JwtAuthorizationFilter(authenticationManager(), userService))
                 // 开启异常处理器
@@ -84,11 +91,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userService).passwordEncoder(passwordEncoder);
     }
 
+
+    @Bean
+    JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
+        JwtAuthenticationFilter filter = new JwtAuthenticationFilter(authenticationManager());
+        //这句很关键，重用WebSecurityConfigurerAdapter配置的AuthenticationManager，不然要自己组装AuthenticationManager
+        filter.setAuthenticationManager(authenticationManagerBean());
+        return filter;
+    }
+
     /**
      * 白名单
      */
     @Override
-    public void configure(WebSecurity web) throws Exception {
+    public void configure(WebSecurity web) {
         web.ignoring().antMatchers("/swagger**/**")
                 .antMatchers("/webjars/**")
                 .antMatchers("/v3/**")

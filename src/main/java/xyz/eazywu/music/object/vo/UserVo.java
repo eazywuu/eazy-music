@@ -1,13 +1,12 @@
 package xyz.eazywu.music.object.vo;
 
 import lombok.Data;
-import xyz.eazywu.music.enums.GenderEnum;
+import xyz.eazywu.music.object.enums.GenderType;
 
 import java.util.List;
 
 @Data
-public class UserVo {
-    private String id;
+public class UserVo extends BaseVo {
 
     private String username;
 
@@ -15,7 +14,7 @@ public class UserVo {
 
     private List<RoleVo> roles;
 
-    private GenderEnum genderEnum;
+    private GenderType gender;
 
     private Boolean locked;
 

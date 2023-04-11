@@ -3,7 +3,7 @@ package xyz.eazywu.music.object.vo;
 import lombok.Data;
 
 @Data
-public class RoleVo {
+public class RoleVo extends BaseVo {
     private String id;
 
     private String name;

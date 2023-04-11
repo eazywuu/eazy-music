@@ -9,7 +9,7 @@ public class BizException extends RuntimeException {
      */
     private final Integer code;
 
-    public BizException(ExceptionType exceptionType) {
+    public BizException(ResultType exceptionType) {
         super(exceptionType.getMessage());
         this.code = exceptionType.getCode();
     }

@@ -1,21 +1,16 @@
 package xyz.eazywu.music.object.dto;
 
 import lombok.Data;
-import xyz.eazywu.music.enums.MusicStatusEnum;
-
-import java.util.Date;
+import xyz.eazywu.music.object.enums.MusicStatusType;
 
 @Data
-public class MusicDto {
-    private String id;
+public class MusicDto extends BaseDto {
 
     private String name;
 
     private String description;
 
-    private MusicStatusEnum status;
+    private MusicStatusType status;
 
-    private Date createdTime;
-
-    private Date updatedTime;
+    private FileDto file;
 }

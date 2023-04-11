@@ -1,15 +1,12 @@
 package xyz.eazywu.music.object.dto;
 
 import lombok.Data;
-import xyz.eazywu.music.enums.FileStatusEnum;
-import xyz.eazywu.music.enums.FileTypeEnum;
-import xyz.eazywu.music.enums.StorageEnum;
-
-import java.util.Date;
+import xyz.eazywu.music.object.enums.FileStatusType;
+import xyz.eazywu.music.object.enums.FileType;
+import xyz.eazywu.music.object.enums.StorageType;
 
 @Data
-public class FileDto {
-    private String id;
+public class FileDto extends BaseDto {
 
     private String name;
 
@@ -17,13 +14,13 @@ public class FileDto {
 
     private String ext;
 
-    private FileTypeEnum type;
+    private String url;
 
-    private StorageEnum storage;
+    private Long size;
 
-    private FileStatusEnum status;
+    private FileType type;
 
-    private String lastLoginIp;
+    private StorageType storage;
 
-    private Date lastLoginTime;
+    private FileStatusType status;
 }

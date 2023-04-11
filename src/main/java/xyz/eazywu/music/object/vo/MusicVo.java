@@ -1,13 +1,10 @@
 package xyz.eazywu.music.object.vo;
 
 import lombok.Data;
-import xyz.eazywu.music.enums.MusicStatusEnum;
-
-import java.util.Date;
+import xyz.eazywu.music.object.enums.MusicStatusType;
 
 @Data
-public class MusicVo {
-    private String id;
+public class MusicVo extends BaseVo {
     /**
      * 音乐名
      */
@@ -19,9 +16,8 @@ public class MusicVo {
     /**
      * 音乐上架状态
      */
-    private MusicStatusEnum status;
+    private MusicStatusType status;
 
-    private Date createdTime;
+    private FileVo file;
 
-    private Date updatedTime;
 }

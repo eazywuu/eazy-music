@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import xyz.eazywu.music.exception.BizException;
 import xyz.eazywu.music.exception.ErrorResponse;
-import xyz.eazywu.music.exception.ExceptionType;
+import xyz.eazywu.music.exception.ResultType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,8 +41,8 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public ErrorResponse accessDeniedHandler(Exception e) {
         ErrorResponse errorResponse = new ErrorResponse();
-        errorResponse.setCode(ExceptionType.FORBIDDEN.getCode());
-        errorResponse.setMessage(ExceptionType.FORBIDDEN.getMessage());
+        errorResponse.setCode(ResultType.FORBIDDEN.getCode());
+        errorResponse.setMessage(ResultType.FORBIDDEN.getMessage());
         e.printStackTrace();
         return errorResponse;
     }
@@ -60,7 +60,7 @@ public class GlobalExceptionHandler {
          */
         e.getBindingResult().getAllErrors().forEach((error) -> {
             ErrorResponse errorResponse = new ErrorResponse();
-            errorResponse.setCode(ExceptionType.BAD_REQUEST.getCode());
+            errorResponse.setCode(ResultType.BAD_REQUEST.getCode());
             errorResponse.setMessage(error.getDefaultMessage());
             errorResponseList.add(errorResponse);
         });
@@ -75,8 +75,8 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse exceptionHandler(Exception e) {
         ErrorResponse errorResponse = new ErrorResponse();
-        errorResponse.setCode(ExceptionType.INNER_ERROR.getCode());
-        errorResponse.setMessage(ExceptionType.INNER_ERROR.getMessage());
+        errorResponse.setCode(ResultType.INNER_ERROR.getCode());
+        errorResponse.setMessage(ResultType.INNER_ERROR.getMessage());
         e.printStackTrace();
         return errorResponse;
     }

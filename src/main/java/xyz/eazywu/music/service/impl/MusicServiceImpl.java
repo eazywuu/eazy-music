@@ -1,41 +1,29 @@
 package xyz.eazywu.music.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import xyz.eazywu.music.object.request.MusicCreateRequestDto;
-import xyz.eazywu.music.object.dto.MusicDto;
-import xyz.eazywu.music.object.request.MusicUpdateRequestDto;
-import xyz.eazywu.music.object.entity.MusicEntity;
-import xyz.eazywu.music.enums.MusicStatusEnum;
 import xyz.eazywu.music.exception.BizException;
-import xyz.eazywu.music.exception.ExceptionType;
+import xyz.eazywu.music.exception.ResultType;
 import xyz.eazywu.music.mapper.MusicMapper;
+import xyz.eazywu.music.object.dto.MusicDto;
+import xyz.eazywu.music.object.entity.Music;
+import xyz.eazywu.music.object.enums.MusicStatusType;
+import xyz.eazywu.music.object.request.MusicCreateReq;
+import xyz.eazywu.music.object.request.MusicUpdateReq;
 import xyz.eazywu.music.repository.MusicRepository;
 import xyz.eazywu.music.service.MusicService;
 
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class MusicServiceImpl implements MusicService {
 
-    private MusicRepository musicRepository;
+    private final MusicRepository musicRepository;
 
-    private MusicMapper musicMapper;
-
-    @Override
-    public MusicDto create(MusicCreateRequestDto musicCreateRequestDto) {
-        MusicEntity musicEntity = musicMapper.createEntity(musicCreateRequestDto);
-        musicEntity.setStatus(MusicStatusEnum.DRAFT);
-        return musicMapper.toDto(musicRepository.save(musicEntity));
-    }
-
-    @Override
-    public MusicDto update(String id, MusicUpdateRequestDto musicUpdateRequestDto) {
-        MusicEntity musicEntity = checkMusicExist(id);
-        return musicMapper.toDto(musicRepository.save(musicMapper.updateEntity(musicEntity, musicUpdateRequestDto)));
-    }
+    private final MusicMapper musicMapper;
 
     @Override
     public Page<MusicDto> search(Pageable pageable) {
@@ -43,33 +31,37 @@ public class MusicServiceImpl implements MusicService {
     }
 
     @Override
+    public MusicDto create(MusicCreateReq musicCreateReq) {
+        Music music = musicMapper.createEntity(musicCreateReq);
+        music.setStatus(MusicStatusType.DRAFT);
+        return musicMapper.toDto(musicRepository.save(music));
+    }
+
+    @Override
+    public MusicDto update(String id, MusicUpdateReq musicUpdateReq) {
+        Music music = checkMusicExist(id);
+        return musicMapper.toDto(musicRepository.save(musicMapper.updateEntity(music, musicUpdateReq)));
+    }
+
+    @Override
     public void publish(String id) {
-        MusicEntity musicEntity = checkMusicExist(id);
-        musicEntity.setStatus(MusicStatusEnum.PUBLISHED);
-        musicRepository.save(musicEntity);
+        Music music = checkMusicExist(id);
+        music.setStatus(MusicStatusType.PUBLISHED);
+        musicRepository.save(music);
     }
 
     @Override
     public void close(String id) {
-        MusicEntity musicEntity = checkMusicExist(id);
-        musicEntity.setStatus(MusicStatusEnum.CLOSED);
-        musicRepository.save(musicEntity);
+        Music music = checkMusicExist(id);
+        music.setStatus(MusicStatusType.CLOSED);
+        musicRepository.save(music);
     }
 
-    private MusicEntity checkMusicExist(String id) {
-        Optional<MusicEntity> music = musicRepository.findById(id);
+    private Music checkMusicExist(String id) {
+        Optional<Music> music = musicRepository.findById(id);
         if (!music.isPresent()) {
-            throw new BizException(ExceptionType.MUSIC_NOT_FOUND);
+            throw new BizException(ResultType.MUSIC_NOT_FOUND);
         }
         return music.get();
-    }
-    @Autowired
-    public void setMusicRepository(MusicRepository musicRepository) {
-        this.musicRepository = musicRepository;
-    }
-
-    @Autowired
-    public void setMusicMapper(MusicMapper musicMapper) {
-        this.musicMapper = musicMapper;
     }
 }

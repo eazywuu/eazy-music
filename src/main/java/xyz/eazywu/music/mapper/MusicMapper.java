@@ -2,20 +2,20 @@ package xyz.eazywu.music.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
-import xyz.eazywu.music.object.request.MusicCreateRequestDto;
+import xyz.eazywu.music.object.entity.Music;
+import xyz.eazywu.music.object.request.MusicCreateReq;
 import xyz.eazywu.music.object.dto.MusicDto;
-import xyz.eazywu.music.object.request.MusicUpdateRequestDto;
-import xyz.eazywu.music.object.entity.MusicEntity;
+import xyz.eazywu.music.object.request.MusicUpdateReq;
 import xyz.eazywu.music.object.vo.MusicVo;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = FileMapper.class)
 public interface MusicMapper {
     MusicVo toVo(MusicDto musicDto);
 
-    MusicDto toDto(MusicEntity musicEntity);
+    MusicDto toDto(Music music);
 
-    MusicEntity createEntity(MusicCreateRequestDto musicCreateRequestDto);
+    Music createEntity(MusicCreateReq musicCreateReq);
 
-    MusicEntity updateEntity(@MappingTarget MusicEntity musicEntity, MusicUpdateRequestDto musicUpdateRequestDto);
+    Music updateEntity(@MappingTarget Music music, MusicUpdateReq musicUpdateReq);
 
 }
