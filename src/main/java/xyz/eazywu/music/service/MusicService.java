@@ -1,17 +1,13 @@
 package xyz.eazywu.music.service;
 
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import xyz.eazywu.music.object.request.MusicCreateReq;
 import xyz.eazywu.music.object.dto.MusicDto;
-import xyz.eazywu.music.object.request.MusicUpdateReq;
+import xyz.eazywu.music.object.entity.Music;
+import xyz.eazywu.music.object.request.MusicSearchFilter;
 
-public interface MusicService {
-    MusicDto create(MusicCreateReq musicCreateReq);
+public interface MusicService extends GeneralService<Music, MusicDto> {
 
-    MusicDto update(String id, MusicUpdateReq musicUpdateReq);
-
-    Page<MusicDto> search(Pageable pageable);
+    Page<MusicDto> search(MusicSearchFilter filter);
 
     void publish(String id);
 

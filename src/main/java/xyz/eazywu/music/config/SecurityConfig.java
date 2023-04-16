@@ -52,6 +52,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      */
     public static final String SITE_SETTING_URI = "/settings/site";
 
+    /**
+     * 歌单请求uri
+     */
+    public static final String PLAYLIST_URI = "/playlists/**";
+
     UserService userService;
 
     RestAuthenticationEntryPoint restAuthenticationEntryPoint;
@@ -66,6 +71,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, CREATE_TOKEN_URI).permitAll()
                 .antMatchers(HttpMethod.GET, SITE_SETTING_URI).permitAll()
+                .antMatchers(HttpMethod.GET, PLAYLIST_URI).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 // 添加用户登录信息filter
@@ -83,7 +89,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     /**
-     * 指定身份验证管理器。调用userService的loadUserByUsername
+     * 指定身份验证管理器，调用userService的loadUserByUsername
      */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {

@@ -5,7 +5,7 @@ import xyz.eazywu.music.object.dto.PlaylistDto;
 import xyz.eazywu.music.object.entity.Playlist;
 import xyz.eazywu.music.object.vo.PlaylistVo;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = FileMapper.class)
 public interface PlaylistMapper {
     PlaylistDto toDto(Playlist playlist);
 

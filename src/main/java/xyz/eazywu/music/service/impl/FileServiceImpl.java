@@ -9,6 +9,7 @@ import xyz.eazywu.music.mapper.FileMapper;
 import xyz.eazywu.music.object.dto.FileDto;
 import xyz.eazywu.music.object.dto.FileUploadDto;
 import xyz.eazywu.music.object.entity.File;
+import xyz.eazywu.music.object.entity.User;
 import xyz.eazywu.music.object.enums.FileStatusType;
 import xyz.eazywu.music.object.enums.StorageType;
 import xyz.eazywu.music.object.request.FileUploadReq;
@@ -54,19 +55,13 @@ public class FileServiceImpl extends BaseService implements FileService {
 
     @Override
     public FileDto finishUpload(String id) {
-        Optional<File> fileOptional = fileRepository.findById(id);
-        if(!fileOptional.isPresent()) {
-            throw new BizException(ResultType.FILE_NOT_FOUND);
-        }
-
         // TODO: 是否是SUPER_ADMIN
         // TODO: 验证远程文件是否存在
 
-        File file = fileOptional.get();
+        File file = getFileEntity(id);
+        User user = getCurrentUserEntity();
         // TODO: 只有上传者和超级管理员才能更新finish; 权限判断
-        log.info(file.getCreatedBy().toString());
-        log.info(getCurrentUserEntity().toString());
-        if (file.getCreatedBy().getId() != getCurrentUserEntity().getId()) {
+        if (user.getRoles().get(1).getName() != "ROLE_ADMIN" && file.getCreatedBy().getId() != user.getId()) {
             throw new BizException(ResultType.FILE_NOT_PERMISSION);
         }
 
@@ -75,8 +70,19 @@ public class FileServiceImpl extends BaseService implements FileService {
     }
 
     @Override
+    public File getFileEntity(String id) {
+        Optional<File> fileOptional = fileRepository.findById(id);
+        if(!fileOptional.isPresent()) {
+            throw new BizException(ResultType.FILE_NOT_FOUND);
+        }
+        return fileOptional.get();
+    }
+
+    @Override
     // Todo: 后台设置当前Storage
     public StorageType getDefaultStorage() {
         return StorageType.COS;
     }
+
+
 }

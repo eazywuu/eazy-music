@@ -5,4 +5,3 @@ public enum ArtistStatusType {
     PUBLISHED,
     BLOCKED
 }
-
