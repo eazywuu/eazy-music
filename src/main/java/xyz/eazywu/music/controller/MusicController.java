@@ -32,7 +32,6 @@ public class MusicController {
     @GetMapping
     @ApiOperation("歌曲检索")
     Page<MusicVo> list(@RequestParam Map<String, Object> map) {
-        log.info(map.toString());
         MusicSearchFilter filter = new MusicSearchFilter();
         filter.setName(map.get("name").toString());
         filter.setPage(Integer.parseInt(map.get("page").toString()));
