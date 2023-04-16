@@ -1,6 +1,7 @@
 package xyz.eazywu.music.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +13,7 @@ import xyz.eazywu.music.service.PlaylistService;
 @RestController
 @RequestMapping("/playlists")
 @RequiredArgsConstructor
+@Slf4j
 public class PlaylistController {
 
     private final PlaylistService playlistService;

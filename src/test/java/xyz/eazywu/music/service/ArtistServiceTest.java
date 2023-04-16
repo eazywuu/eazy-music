@@ -20,7 +20,6 @@ class ArtistServiceTest extends BaseTest {
         ArtistCreateReq artistCreateReq = new ArtistCreateReq();
         artistCreateReq.setName("陶喆");
         artistCreateReq.setRemark("David Tao");
-        artistCreateReq.setPhotoId("1111");
         artistService.create(artistCreateReq);
     }
 }
