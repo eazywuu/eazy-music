@@ -14,11 +14,11 @@ import xyz.eazywu.music.mapper.MusicMapper;
 import xyz.eazywu.music.object.dto.MusicDto;
 import xyz.eazywu.music.object.entity.Music;
 import xyz.eazywu.music.object.enums.MusicStatusType;
-import xyz.eazywu.music.object.request.MusicSearchFilter;
+import xyz.eazywu.music.object.filter.MusicSearchFilter;
 import xyz.eazywu.music.repository.MusicRepository;
-import xyz.eazywu.music.repository.spec.MusicSpecification;
-import xyz.eazywu.music.repository.spec.SearchCriteria;
-import xyz.eazywu.music.repository.spec.SearchOperation;
+import xyz.eazywu.music.repository.search.SearchCriteria;
+import xyz.eazywu.music.repository.search.SearchOperation;
+import xyz.eazywu.music.repository.search.spec.MusicSpecification;
 import xyz.eazywu.music.service.MusicService;
 
 @Service
@@ -51,7 +51,6 @@ public class MusicServiceImpl extends GeneralServiceImpl<Music, MusicDto> implem
         music.setStatus(MusicStatusType.CLOSED);
         repository.save(music);
     }
-
 
     @Override
     public JpaRepository<Music, String> repository() {

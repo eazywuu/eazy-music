@@ -16,17 +16,17 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class PlaylistServiceImpl implements PlaylistService {
 
-    private final PlaylistMapper playlistMapper;
+    private final PlaylistMapper mapper;
 
-    private final PlaylistRepository playlistRepository;
+    private final PlaylistRepository repository;
 
     @Override
     public PlaylistDto get(String id) {
-        return playlistMapper.toDto(checkPlaylistExist(id));
+        return mapper.toDto(checkPlaylistExist(id));
     }
 
     private Playlist checkPlaylistExist(String id) {
-        Optional<Playlist> playlist = playlistRepository.findById(id);
+        Optional<Playlist> playlist = repository.findById(id);
         if (!playlist.isPresent()) {
             throw new BizException(ResultType.PLAYLIST_NOT_FOUND);
         }

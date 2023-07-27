@@ -1,0 +1,5 @@
+# database
+spring:
+  datasource.url: jdbc:mysql://${MYSQL_HOST}:${MYSQL_SERVER_PORT}/${MYSQL_DATABASE_NAME}?${MYSQL_URL_CONFIG}
+  # 解析.env文件为.properties文件
+  config.import: optional:file:.env[.properties]

@@ -10,9 +10,12 @@ import xyz.eazywu.music.repository.UserRepository;
 
 import java.util.Optional;
 
-public abstract class BaseService {
+/**
+ * 记录用户上下文服务
+ */
+public abstract class UserContextService {
 
-    private UserRepository userRepository;
+    private UserRepository repository;
 
     protected User getCurrentUserEntity() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -21,7 +24,7 @@ public abstract class BaseService {
 
 
     protected User loadUserByUsername(String username) {
-        Optional<User> user = userRepository.findByUsername(username);
+        Optional<User> user = repository.findByUsername(username);
         if (!user.isPresent()) {
             throw new BizException(ResultType.USER_NOT_FOUND);
         }
@@ -29,7 +32,7 @@ public abstract class BaseService {
     }
 
     @Autowired
-    private void setUserRepository(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    private void setRepository(UserRepository repository) {
+        this.repository = repository;
     }
 }

@@ -26,11 +26,10 @@ import java.util.Optional;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class UserServiceImpl extends BaseService implements UserService {
-
-    private final UserRepository userRepository;
+public class UserServiceImpl extends UserContextService implements UserService {
 
     private final UserMapper userMapper;
+    private final UserRepository repository;
     // 密码加密器
     private final PasswordEncoder passwordEncoder;
 
@@ -39,7 +38,7 @@ public class UserServiceImpl extends BaseService implements UserService {
         checkUsername(userCreateReq.getUsername());
         User user = userMapper.createEntity(userCreateReq);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userMapper.toDto(userRepository.save(user));
+        return userMapper.toDto(repository.save(user));
     }
 
 
@@ -52,17 +51,17 @@ public class UserServiceImpl extends BaseService implements UserService {
     public UserDto update(String id, UserUpdateReq userUpdateReq) {
         User user = checkUserExist(id);
         userUpdateReq.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userMapper.toDto(userRepository.save(userMapper.updateEntity(user, userUpdateReq)));
+        return userMapper.toDto(repository.save(userMapper.updateEntity(user, userUpdateReq)));
     }
 
     @Override
     public void delete(String id) {
-        userRepository.delete(checkUserExist(id));
+        repository.delete(checkUserExist(id));
     }
 
     @Override
     public Page<UserDto> search(Pageable pageable) {
-        return userRepository.findAll(pageable).map(userMapper::toDto);
+        return repository.findAll(pageable).map(userMapper::toDto);
     }
 
     /**
@@ -103,14 +102,14 @@ public class UserServiceImpl extends BaseService implements UserService {
     }
 
     private void checkUsername(String username) {
-        Optional<User> user = userRepository.findByUsername(username);
+        Optional<User> user = repository.findByUsername(username);
         if (user.isPresent()) {
             throw new BizException(ResultType.USER_NAME_DUPLICATE);
         }
     }
 
     private User checkUserExist(String id) {
-        Optional<User> user = userRepository.findById(id);
+        Optional<User> user = repository.findById(id);
         if (!user.isPresent()) {
             throw new BizException(ResultType.USER_NOT_FOUND);
         }

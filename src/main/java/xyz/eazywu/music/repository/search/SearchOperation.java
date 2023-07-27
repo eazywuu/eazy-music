@@ -1,5 +1,8 @@
-package xyz.eazywu.music.repository.spec;
+package xyz.eazywu.music.repository.search;
 
+/**
+ * 搜索选项
+ */
 public enum SearchOperation {
     GREATER_THAN,
     LESS_THAN,

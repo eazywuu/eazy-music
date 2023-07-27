@@ -1,9 +1,10 @@
 package xyz.eazywu.music.object.request;
 
 import lombok.Data;
-import xyz.eazywu.music.object.dto.FileDto;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import java.util.List;
 
 @Data
 public class MusicCreateReq {
@@ -12,5 +13,8 @@ public class MusicCreateReq {
 
     private String description;
 
-    private FileDto file;
+    private String fileId;
+
+    @NotEmpty(message = "歌手列表不能为空")
+    private List<String> artistIds;
 }

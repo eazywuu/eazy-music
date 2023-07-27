@@ -9,7 +9,7 @@ import xyz.eazywu.music.object.dto.BaseDto;
 import xyz.eazywu.music.object.entity.BaseEntity;
 
 public interface GeneralService<Entity extends BaseEntity, Dto extends BaseDto> {
-    Page<Dto> list(Pageable pageable);
+    Page<Dto> search(Pageable pageable);
 
     Entity checkExist(String id);
 

@@ -1,16 +1,11 @@
 package xyz.eazywu.music.service;
 
+import org.springframework.data.domain.Page;
 import xyz.eazywu.music.object.dto.ArtistDto;
-import xyz.eazywu.music.object.request.ArtistCreateReq;
-import xyz.eazywu.music.object.request.ArtistUpdateReq;
+import xyz.eazywu.music.object.entity.Artist;
+import xyz.eazywu.music.object.filter.ArtistSearchFilter;
 
-import java.util.List;
+public interface ArtistService extends GeneralService<Artist, ArtistDto> {
 
-public interface ArtistService {
-
-    List<ArtistDto> list();
-
-    ArtistDto create(ArtistCreateReq artistCreateReq);
-
-    ArtistDto update(String id, ArtistUpdateReq artistUpdateReq);
+    Page<ArtistDto> search(ArtistSearchFilter filter);
 }

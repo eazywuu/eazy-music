@@ -1,7 +1,6 @@
 package xyz.eazywu.music.controller;
 
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -9,13 +8,11 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import xyz.eazywu.music.mapper.MusicMapper;
+import xyz.eazywu.music.object.filter.MusicSearchFilter;
 import xyz.eazywu.music.object.request.MusicCreateReq;
-import xyz.eazywu.music.object.request.MusicSearchFilter;
 import xyz.eazywu.music.object.request.MusicUpdateReq;
 import xyz.eazywu.music.object.vo.MusicVo;
 import xyz.eazywu.music.service.MusicService;
-
-import java.util.Map;
 
 @Api(tags = "音乐管理接口")
 @RestController
@@ -30,13 +27,7 @@ public class MusicController {
     private final MusicMapper musicMapper;
 
     @GetMapping
-    @ApiOperation("歌曲检索")
-    Page<MusicVo> list(@RequestParam Map<String, Object> map) {
-        log.info(map.toString());
-        MusicSearchFilter filter = new MusicSearchFilter();
-        filter.setName(map.get("name").toString());
-        filter.setPage(Integer.parseInt(map.get("page").toString()));
-        filter.setSize(Integer.parseInt(map.get("size").toString()));
+    Page<MusicVo> list(@Validated @ModelAttribute MusicSearchFilter filter) {
         return musicService.search(filter).map(musicMapper::toVo);
     }
 

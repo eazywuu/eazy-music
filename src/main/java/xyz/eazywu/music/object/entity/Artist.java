@@ -1,20 +1,24 @@
 package xyz.eazywu.music.object.entity;
 
-import lombok.Data;
-import xyz.eazywu.music.object.enums.ArtistStatusType;
+        import lombok.AllArgsConstructor;
+        import lombok.Data;
+        import lombok.NoArgsConstructor;
+        import xyz.eazywu.music.object.enums.ArtistStatusType;
 
-import javax.persistence.*;
-import java.util.List;
+        import javax.persistence.*;
+        import java.util.List;
 
 @Entity
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Artist extends TraceableEntity {
 
     private String name;
 
     private String remark;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne
     private File photo;
 
     @ManyToMany
@@ -23,5 +27,6 @@ public class Artist extends TraceableEntity {
             inverseJoinColumns = @JoinColumn(name = "music_id", referencedColumnName = "id"))
     private List<Music> musicList;
 
+    @Enumerated(EnumType.STRING)
     private ArtistStatusType status;
 }

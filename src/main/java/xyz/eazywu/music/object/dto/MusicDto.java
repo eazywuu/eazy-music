@@ -4,6 +4,8 @@ import lombok.Data;
 import lombok.ToString;
 import xyz.eazywu.music.object.enums.MusicStatusType;
 
+import java.util.List;
+
 @Data
 @ToString(callSuper = true)
 public class MusicDto extends BaseDto {
@@ -15,4 +17,6 @@ public class MusicDto extends BaseDto {
     private MusicStatusType status = MusicStatusType.DRAFT;
 
     private FileDto file;
+
+    private List<ArtistDto> artistList;
 }
