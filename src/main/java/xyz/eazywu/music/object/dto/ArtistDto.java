@@ -6,7 +6,7 @@ import xyz.eazywu.music.object.enums.ArtistStatusType;
 import java.util.List;
 
 @Data
-public class ArtistDto extends BaseDto{
+public class ArtistDto extends TraceableDto{
     private String name;
 
     private String remark;
@@ -15,5 +15,5 @@ public class ArtistDto extends BaseDto{
 
     private List<MusicDto> musicList;
 
-    private ArtistStatusType status;
+    private ArtistStatusType status = ArtistStatusType.DRAFT;
 }

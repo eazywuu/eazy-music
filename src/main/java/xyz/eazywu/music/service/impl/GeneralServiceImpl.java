@@ -9,22 +9,30 @@ import xyz.eazywu.music.service.GeneralService;
 
 import java.util.Optional;
 
-public abstract class GeneralServiceImpl<Entity extends BaseEntity, Dto extends BaseDto> implements GeneralService<Entity, Dto> {
+/**
+ * 通用Service实现类,包括增、删、改、查和判断是否存在方法
+ * @param <Entity> 实体
+ * @param <Dto> Dto映射
+ * @extends <UserContextService> 用户上下文
+ */
+public abstract class GeneralServiceImpl<Entity extends BaseEntity, Dto extends BaseDto> extends UserContextService implements GeneralService<Entity, Dto> {
 
-    public Page<Dto> list(Pageable pageable) {
+    public Page<Dto> search(Pageable pageable) {
         return repository().findAll(pageable).map(mapper()::toDto);
     }
 
+    @Transactional
     public Dto create(Dto dto){
         return mapper().toDto(repository().save(mapper().toEntity(dto)));
     }
 
     @Transactional
     public Dto update(String id, Dto dto){
-        // ToDo: dto可能无法控制更新字段
+        // Todo: dto可能无法控制更新字段
         return mapper().toDto(repository().save(mapper().updateEntity(checkExist(id), dto)));
     }
 
+    @Transactional
     public void delete(String id){
         repository().delete(checkExist(id));
     }

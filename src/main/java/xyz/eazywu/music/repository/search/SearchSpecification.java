@@ -1,8 +1,7 @@
-package xyz.eazywu.music.repository.spec;
+package xyz.eazywu.music.repository.search;
 
 import org.springframework.data.jpa.domain.Specification;
-import xyz.eazywu.music.repository.strategy.SpecificationStrategy;
-import xyz.eazywu.music.repository.strategy.*;
+import xyz.eazywu.music.repository.search.strategy.*;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -13,11 +12,15 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class AbstractSpecification<T> implements Specification<T> {
+/**
+ * 搜索规范
+ * @param <T> 实体类
+ */
+public abstract class SearchSpecification<T> implements Specification<T> {
     private final List<SearchCriteria> list;
-    private final Map<SearchOperation, SpecificationStrategy<T>> strategyMap;
+    private final Map<SearchOperation, SearchStrategy<T>> strategyMap;
 
-    protected AbstractSpecification() {
+    protected SearchSpecification() {
         this.list = new ArrayList<>();
         this.strategyMap = new EnumMap<>(SearchOperation.class);
         strategyMap.put(SearchOperation.GREATER_THAN, new GreaterThanStrategy<>());
@@ -42,7 +45,7 @@ public abstract class AbstractSpecification<T> implements Specification<T> {
     public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
         List<Predicate> predicates = new ArrayList<>();
         for (SearchCriteria criteria : list) {
-            SpecificationStrategy<T> strategy = strategyMap.get(criteria.getOperation());
+            SearchStrategy<T> strategy = strategyMap.get(criteria.getOperation());
             if (strategy == null) {
                 throw new IllegalArgumentException("Invalid search operation: " + criteria.getOperation());
             }

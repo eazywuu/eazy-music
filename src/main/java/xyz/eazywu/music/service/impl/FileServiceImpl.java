@@ -25,7 +25,7 @@ import java.util.Optional;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class FileServiceImpl extends BaseService implements FileService {
+public class FileServiceImpl extends UserContextService implements FileService {
 
     private final Map<String, StorageService> storageServiceMap;
 
@@ -83,6 +83,5 @@ public class FileServiceImpl extends BaseService implements FileService {
     public StorageType getDefaultStorage() {
         return StorageType.COS;
     }
-
 
 }

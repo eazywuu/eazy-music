@@ -1,0 +1,32 @@
+server:
+  port: ${APPLICATION_PORT}
+
+spring:
+  profiles:
+    active: dev
+  application:
+    name: eazy-music
+  datasource:
+    name: druid
+    driver-class-name: ${MYSQL_DRIVER_CLASS_NAME}
+    url: jdbc:mysql://${MYSQL_HOST}:${MYSQL_SERVER_PORT}/${MYSQL_DATABASE_NAME}?${MYSQL_URL_CONFIG}
+    username: ${MYSQL_USERNAME}
+    password: ${MYSQL_PASSWORD}
+  jpa:
+    generate-ddl: false
+  flyway:
+    enabled: true
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+wechat:
+  mp:
+    app-id: ${MP_APP_ID}
+    app-secret: ${MP_APP_SECRET}
+
+cos:
+  secret-id: ${COS_SECRET_ID}
+  secret-key: ${COS_SECRET_KEY}
+  bucket: ${COS_BUCKET}
+  region: ${COS_REGION}

@@ -3,6 +3,8 @@ package xyz.eazywu.music.object.vo;
 import lombok.Data;
 import xyz.eazywu.music.object.enums.MusicStatusType;
 
+import java.util.List;
+
 @Data
 public class MusicVo extends BaseVo {
     /**
@@ -19,5 +21,7 @@ public class MusicVo extends BaseVo {
     private MusicStatusType status;
 
     private FileVo file;
+
+    private List<ArtistVo> artistList;
 
 }

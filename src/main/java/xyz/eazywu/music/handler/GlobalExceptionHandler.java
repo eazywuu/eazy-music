@@ -1,7 +1,9 @@
 package xyz.eazywu.music.handler;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -17,6 +19,7 @@ import java.util.List;
  * 全局异常处理器
  */
 @RestControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
     /**
      * 自定义异常处理器
@@ -31,6 +34,24 @@ public class GlobalExceptionHandler {
         errorResponse.setTrace(e.getStackTrace());
         e.printStackTrace();
         return errorResponse;
+    }
+
+    /**
+     * get请求参数校验错误
+     * code 417
+     */
+    @ExceptionHandler(value = BindException.class)
+    @ResponseStatus(HttpStatus.EXPECTATION_FAILED)
+    public List<ErrorResponse> bindExceptionHandler(BindException e) {
+        List<ErrorResponse> errorResponseList = new ArrayList<>();
+        e.getBindingResult().getAllErrors().forEach((error) -> {
+            ErrorResponse errorResponse = new ErrorResponse();
+            errorResponse.setCode(HttpStatus.EXPECTATION_FAILED.value());
+            errorResponse.setMessage(error.getDefaultMessage());
+            errorResponseList.add(errorResponse);
+        });
+        e.printStackTrace();
+        return errorResponseList;
     }
 
     /**

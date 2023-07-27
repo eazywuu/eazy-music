@@ -5,10 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import xyz.eazywu.music.object.enums.MusicStatusType;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
+import java.util.List;
 
 /**
  * 音乐实体类
@@ -34,4 +32,10 @@ public class Music extends BaseEntity {
 
     @OneToOne
     private File file;
+
+    @ManyToMany
+    @JoinTable(name = "music_artist",
+            joinColumns = @JoinColumn(name = "music_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "artist_id", referencedColumnName = "id"))
+    private List<Artist> artistList;
 }
