@@ -33,7 +33,6 @@ public class SwaggerConfig {
                 .build();
     }
 
-
     private SecurityContext securityContext() {
         return SecurityContext.builder().securityReferences(defaultAuth()).build();
     }
@@ -49,7 +48,6 @@ public class SwaggerConfig {
         return new ApiKey(SecurityConfig.HEADER_STRING, SecurityConfig.HEADER_STRING, "header");
     }
 
-
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("一起听音乐")
@@ -58,5 +56,4 @@ public class SwaggerConfig {
                 .version("1.0.0")
                 .build();
     }
-
 }

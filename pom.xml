@@ -6,7 +6,7 @@
     <artifactId>eazy-music</artifactId>
     <version>0.0.1</version>
     <name>eazy-music</name>
-    <description>eazy-music 后台服务</description>
+    <description>eazy music service api</description>
 
     <properties>
         <java.version>1.8</java.version>
