@@ -10,8 +10,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import xyz.eazywu.music.exception.BizException;
 import xyz.eazywu.music.exception.ErrorResponse;
-import xyz.eazywu.music.exception.ResultType;
+import xyz.eazywu.music.exception.ExceptionType;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,12 +28,12 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(value = BizException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ErrorResponse bizExceptionHandler(BizException e) {
+    public ErrorResponse bizExceptionHandler(HttpServletRequest httpServletRequest, BizException e) {
         ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setCode(e.getCode());
         errorResponse.setMessage(e.getMessage());
-        errorResponse.setTrace(e.getStackTrace());
-        e.printStackTrace();
+        errorResponse.setTrace(e.getMessage());
+
         return errorResponse;
     }
 
@@ -44,12 +45,15 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.EXPECTATION_FAILED)
     public List<ErrorResponse> bindExceptionHandler(BindException e) {
         List<ErrorResponse> errorResponseList = new ArrayList<>();
+
         e.getBindingResult().getAllErrors().forEach((error) -> {
             ErrorResponse errorResponse = new ErrorResponse();
             errorResponse.setCode(HttpStatus.EXPECTATION_FAILED.value());
             errorResponse.setMessage(error.getDefaultMessage());
+
             errorResponseList.add(errorResponse);
         });
+
         e.printStackTrace();
         return errorResponseList;
     }
@@ -62,8 +66,9 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public ErrorResponse accessDeniedHandler(Exception e) {
         ErrorResponse errorResponse = new ErrorResponse();
-        errorResponse.setCode(ResultType.FORBIDDEN.getCode());
-        errorResponse.setMessage(ResultType.FORBIDDEN.getMessage());
+        errorResponse.setCode(ExceptionType.FORBIDDEN.getCode());
+        errorResponse.setMessage(ExceptionType.FORBIDDEN.getMessage());
+
         e.printStackTrace();
         return errorResponse;
     }
@@ -76,12 +81,11 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public List<ErrorResponse> methodArgumentNotValidExceptionHandler(MethodArgumentNotValidException e) {
         List<ErrorResponse> errorResponseList = new ArrayList<>();
-        /**
-         * 出现多个异常时的处理
-         */
+
+        // 出现多个异常时的处理
         e.getBindingResult().getAllErrors().forEach((error) -> {
             ErrorResponse errorResponse = new ErrorResponse();
-            errorResponse.setCode(ResultType.BAD_REQUEST.getCode());
+            errorResponse.setCode(ExceptionType.BAD_REQUEST.getCode());
             errorResponse.setMessage(error.getDefaultMessage());
             errorResponseList.add(errorResponse);
         });
@@ -96,8 +100,9 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse exceptionHandler(Exception e) {
         ErrorResponse errorResponse = new ErrorResponse();
-        errorResponse.setCode(ResultType.INNER_ERROR.getCode());
-        errorResponse.setMessage(ResultType.INNER_ERROR.getMessage());
+        errorResponse.setCode(ExceptionType.INNER_ERROR.getCode());
+        errorResponse.setMessage(ExceptionType.INNER_ERROR.getMessage());
+
         e.printStackTrace();
         return errorResponse;
     }

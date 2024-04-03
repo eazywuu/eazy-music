@@ -8,7 +8,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import xyz.eazywu.music.exception.BizException;
-import xyz.eazywu.music.exception.ResultType;
+import xyz.eazywu.music.exception.ExceptionType;
 import xyz.eazywu.music.mapper.MapperInterface;
 import xyz.eazywu.music.mapper.MusicMapper;
 import xyz.eazywu.music.object.dto.MusicDto;
@@ -64,6 +64,6 @@ public class MusicServiceImpl extends GeneralServiceImpl<Music, MusicDto> implem
 
     @Override
     public BizException getNotFoundException() {
-        return new BizException(ResultType.MUSIC_NOT_FOUND);
+        return new BizException(ExceptionType.MUSIC_NOT_FOUND);
     }
 }

@@ -5,8 +5,8 @@
     <groupId>com.wyz</groupId>
     <artifactId>eazy-music</artifactId>
     <version>0.0.1</version>
-    <name>eazy-music</name>
-    <description>eazy music service api</description>
+    <name>easy-music</name>
+    <description>easy-music-service-api</description>
 
     <properties>
         <java.version>1.8</java.version>

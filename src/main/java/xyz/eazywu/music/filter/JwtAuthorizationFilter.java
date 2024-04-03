@@ -1,7 +1,5 @@
 package xyz.eazywu.music.filter;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,11 +21,14 @@ import java.io.IOException;
 @Slf4j
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
-    UserService userService;
+    private final JwtProvider jwtProvider;
 
-    public JwtAuthorizationFilter(AuthenticationManager authenticationManager, UserService userService) {
+    private final UserService userService;
+
+    public JwtAuthorizationFilter(AuthenticationManager authenticationManager, UserService userService, JwtProvider jwtProvider) {
         super(authenticationManager);
         this.userService = userService;
+        this.jwtProvider = jwtProvider;
     }
 
     /**
@@ -35,25 +36,32 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
      */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
+        // 获取请求头
         String header = request.getHeader(SecurityConfig.HEADER_STRING);
+
+        // 验证请求头，空或token prefix不匹配，继续执行filter chain
         if (header == null || !header.startsWith(SecurityConfig.TOKEN_PREFIX)) {
             chain.doFilter(request, response);
             return;
         }
-        UsernamePasswordAuthenticationToken token = getAuthenticationToken(header);
+        UsernamePasswordAuthenticationToken token = this.getAuthenticationToken(header);
         SecurityContextHolder.getContext().setAuthentication(token);
         chain.doFilter(request, response);
     }
 
     private UsernamePasswordAuthenticationToken getAuthenticationToken(String header) {
-        String username = JWT.require(Algorithm.HMAC512(SecurityConfig.SECRET.getBytes()))
-                .build()
-                .verify(header.replace(SecurityConfig.TOKEN_PREFIX, ""))
-                .getSubject();
-        if (username != null) {
-            User user = userService.loadUserByUsername(username);
-            return new UsernamePasswordAuthenticationToken(username, null, user.getAuthorities());
+        if (header == null) {
+            return null;
         }
-        return null;
+        // 反向获取username
+        // 指定生成jwt的加密算法
+        String username = jwtProvider.getUsernameFromToken(header.replace(SecurityConfig.HEADER_STRING, ""));
+
+        if (username == null) {
+            return null;
+        }
+
+        User user = userService.loadUserByUsername(username);
+        return new UsernamePasswordAuthenticationToken(username, null, user.getAuthorities());
     }
 }

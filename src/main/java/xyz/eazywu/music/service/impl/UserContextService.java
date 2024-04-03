@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import xyz.eazywu.music.exception.BizException;
-import xyz.eazywu.music.exception.ResultType;
+import xyz.eazywu.music.exception.ExceptionType;
 import xyz.eazywu.music.object.entity.User;
 import xyz.eazywu.music.repository.UserRepository;
 
@@ -25,10 +25,7 @@ public abstract class UserContextService {
 
     protected User loadUserByUsername(String username) {
         Optional<User> user = repository.findByUsername(username);
-        if (!user.isPresent()) {
-            throw new BizException(ResultType.USER_NOT_FOUND);
-        }
-        return user.get();
+        return user.orElseThrow(() -> new BizException(ExceptionType.USER_NOT_FOUND));
     }
 
     @Autowired

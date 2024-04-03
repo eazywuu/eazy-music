@@ -1,8 +1,6 @@
 package xyz.eazywu.music.object.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Entity;
 
@@ -10,7 +8,8 @@ import javax.persistence.Entity;
  * 角色实体类
  */
 @Entity
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Role extends BaseEntity {
