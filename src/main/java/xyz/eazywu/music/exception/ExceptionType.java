@@ -8,9 +8,8 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-public enum ResultType {
+public enum ExceptionType {
 
-    //成功提示码
     SUCCESS(20000, "成功"),
     //自定义失败信息
     FAILURE(50000, "失败"),
@@ -19,6 +18,7 @@ public enum ResultType {
     BAD_REQUEST(400, "请求错误"),
     FORBIDDEN(403, "无权操作"),
     NOT_FOUND(404, "未找到"),
+
     USER_NAME_DUPLICATE(40001001, "用户名重复"),
     USER_NOT_FOUND(40401002, "用户不存在"),
     USER_PASSWORD_NOT_MATCH(40001003, "用户名或密码错误"),
@@ -34,5 +34,4 @@ public enum ResultType {
 
     private final Integer code;
     private final String message;
-
 }

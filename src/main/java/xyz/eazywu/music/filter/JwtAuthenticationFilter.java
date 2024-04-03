@@ -1,8 +1,7 @@
 package xyz.eazywu.music.filter;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -11,26 +10,24 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import xyz.eazywu.music.config.SecurityConfig;
 import xyz.eazywu.music.exception.BizException;
-import xyz.eazywu.music.exception.ResultType;
+import xyz.eazywu.music.exception.ExceptionType;
 import xyz.eazywu.music.object.entity.User;
 
 import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Date;
 
 /**
  * 登录认证： 通过用户名和密码认证身份，并生成token
  */
 @Slf4j
+@RequiredArgsConstructor
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
 
-    public JwtAuthenticationFilter(AuthenticationManager authenticationManager) {
-        this.authenticationManager = authenticationManager;
-    }
+    private final JwtProvider jwtProvider;
 
     /**
      * 进行登录身份验证
@@ -50,7 +47,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                     )
             );
         } catch (IOException e) {
-            throw new BizException(ResultType.FORBIDDEN);
+            throw new BizException(ExceptionType.FORBIDDEN);
         }
     }
 
@@ -59,13 +56,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
      */
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult)  {
-        String token = JWT.create()
-                // 主题：用户名
-                .withSubject(((User) authResult.getPrincipal()).getUsername())
-                // 过期时间：当前时间 + 有效时间
-                .withExpiresAt(new Date(System.currentTimeMillis() + SecurityConfig.EXPIRATION_TIME))
-                // 签名：使用签名算法对密钥加密
-                .sign(Algorithm.HMAC512(SecurityConfig.SECRET.getBytes()));
+        String token = jwtProvider.generateToken(((User) authResult.getPrincipal()).getUsername());
         //设置token名称，拼接token，加入header
         response.addHeader(SecurityConfig.HEADER_STRING, SecurityConfig.TOKEN_PREFIX + token);
     }

@@ -3,7 +3,7 @@ package xyz.eazywu.music.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import xyz.eazywu.music.exception.BizException;
-import xyz.eazywu.music.exception.ResultType;
+import xyz.eazywu.music.exception.ExceptionType;
 import xyz.eazywu.music.mapper.PlaylistMapper;
 import xyz.eazywu.music.object.dto.PlaylistDto;
 import xyz.eazywu.music.object.entity.Playlist;
@@ -28,7 +28,7 @@ public class PlaylistServiceImpl implements PlaylistService {
     private Playlist checkPlaylistExist(String id) {
         Optional<Playlist> playlist = repository.findById(id);
         if (!playlist.isPresent()) {
-            throw new BizException(ResultType.PLAYLIST_NOT_FOUND);
+            throw new BizException(ExceptionType.PLAYLIST_NOT_FOUND);
         }
         return playlist.get();
     }

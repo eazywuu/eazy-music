@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import xyz.eazywu.music.exception.BizException;
-import xyz.eazywu.music.exception.ResultType;
+import xyz.eazywu.music.exception.ExceptionType;
 import xyz.eazywu.music.mapper.FileMapper;
 import xyz.eazywu.music.object.dto.FileDto;
 import xyz.eazywu.music.object.dto.FileUploadDto;
@@ -20,6 +20,7 @@ import xyz.eazywu.music.utils.FileTypeTransformer;
 
 import javax.transaction.Transactional;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -61,8 +62,8 @@ public class FileServiceImpl extends UserContextService implements FileService {
         File file = getFileEntity(id);
         User user = getCurrentUserEntity();
         // TODO: 只有上传者和超级管理员才能更新finish; 权限判断
-        if (user.getRoles().get(1).getName() != "ROLE_ADMIN" && file.getCreatedBy().getId() != user.getId()) {
-            throw new BizException(ResultType.FILE_NOT_PERMISSION);
+        if (!Objects.equals(user.getRoles().get(1).getName(), "ROLE_ADMIN") && file.getCreatedBy().getId() != user.getId()) {
+            throw new BizException(ExceptionType.FILE_NOT_PERMISSION);
         }
 
         file.setStatus(FileStatusType.UPLOADED);
@@ -73,7 +74,7 @@ public class FileServiceImpl extends UserContextService implements FileService {
     public File getFileEntity(String id) {
         Optional<File> fileOptional = fileRepository.findById(id);
         if(!fileOptional.isPresent()) {
-            throw new BizException(ResultType.FILE_NOT_FOUND);
+            throw new BizException(ExceptionType.FILE_NOT_FOUND);
         }
         return fileOptional.get();
     }

@@ -34,10 +34,13 @@ public class ResponseControllerAdvice implements ResponseBodyAdvice<Object> {
     @Override
     public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType, Class<? extends HttpMessageConverter<?>> selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
         log.info("包装返回值" + returnType.getParameterType().getSimpleName());
+
         Result<Object> result = new Result<>();
+
         // String 类型不能直接包装，需要进行特殊处理
         if (returnType.getParameterType().equals(String.class)) {
             ObjectMapper objectMapper = new ObjectMapper();
+
             try {
                 // 使用 jackson 将返回数据转换为 json
                 return objectMapper.writeValueAsString(result.success(body));
@@ -46,6 +49,7 @@ public class ResponseControllerAdvice implements ResponseBodyAdvice<Object> {
                 throw new RuntimeException("String类型返回值包装异常");
             }
         }
+
         return result.success(body);
     }
 }

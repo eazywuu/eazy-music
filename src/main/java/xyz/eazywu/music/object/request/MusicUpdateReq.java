@@ -3,6 +3,8 @@ package xyz.eazywu.music.object.request;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import java.util.List;
 
 @Data
 public class MusicUpdateReq {
@@ -10,4 +12,9 @@ public class MusicUpdateReq {
     private String name;
 
     private String description;
+
+    private String fileId;
+
+    @NotEmpty(message = "歌手未选择")
+    private List<String> artistIds;
 }

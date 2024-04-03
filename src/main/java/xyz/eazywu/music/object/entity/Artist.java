@@ -1,15 +1,14 @@
 package xyz.eazywu.music.object.entity;
 
-        import lombok.AllArgsConstructor;
-        import lombok.Data;
-        import lombok.NoArgsConstructor;
-        import xyz.eazywu.music.object.enums.ArtistStatusType;
+import lombok.*;
+import xyz.eazywu.music.object.enums.ArtistStatusType;
 
-        import javax.persistence.*;
-        import java.util.List;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Artist extends TraceableEntity {
@@ -18,7 +17,7 @@ public class Artist extends TraceableEntity {
 
     private String remark;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private File photo;
 
     @ManyToMany

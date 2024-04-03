@@ -9,7 +9,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import xyz.eazywu.music.exception.BizException;
-import xyz.eazywu.music.exception.ResultType;
+import xyz.eazywu.music.exception.ExceptionType;
 import xyz.eazywu.music.mapper.ArtistMapper;
 import xyz.eazywu.music.mapper.MapperInterface;
 import xyz.eazywu.music.object.dto.ArtistDto;
@@ -51,6 +51,6 @@ public class ArtistServiceImpl extends TraceableServiceImpl<Artist, ArtistDto> i
 
     @Override
     public BizException getNotFoundException() {
-        return new BizException(ResultType.ARTIST_NOT_FOUND);
+        return new BizException(ExceptionType.ARTIST_NOT_FOUND);
     }
 }

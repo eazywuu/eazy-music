@@ -12,7 +12,7 @@ import com.tencent.cloud.Response;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import xyz.eazywu.music.exception.BizException;
-import xyz.eazywu.music.exception.ResultType;
+import xyz.eazywu.music.exception.ExceptionType;
 import xyz.eazywu.music.object.dto.FileUploadDto;
 import xyz.eazywu.music.service.StorageService;
 
@@ -36,7 +36,6 @@ public class CosStorageServiceImpl implements StorageService {
     @Value("${cos.region}")
     private String region;
 
-
     @Override
     public FileUploadDto initFileUpload() {
         try {
@@ -51,7 +50,7 @@ public class CosStorageServiceImpl implements StorageService {
             return fileUploadDto;
         } catch (Exception e) {
             e.printStackTrace();
-            throw new BizException(ResultType.INNER_ERROR);
+            throw new BizException(ExceptionType.INNER_ERROR);
         }
     }
 

@@ -1,8 +1,6 @@
 package xyz.eazywu.music.object.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import xyz.eazywu.music.object.enums.FileStatusType;
 import xyz.eazywu.music.object.enums.FileType;
 import xyz.eazywu.music.object.enums.StorageType;
@@ -12,7 +10,8 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
-@Data
+@Getter
+@Setter
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor

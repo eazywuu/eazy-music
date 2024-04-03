@@ -3,8 +3,8 @@
 音乐后台服务
 
 ## process
-前端发送Dto格式数据给controller-》controller传递dto给service -》service转换为实体传递给数据库
-数据返回entity给service -》service转换为dto给controller -》 controller转换为vo返回给前端
+前端发送Dto/Req格式数据给controller-》controller传递dto给service -》service转换为entity传递给repository
+repository返回entity给service -》service转换为dto给controller -》 controller转换为vo返回给前端
 
 ## Step 4
 

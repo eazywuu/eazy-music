@@ -1,8 +1,6 @@
 package xyz.eazywu.music.object.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import xyz.eazywu.music.object.enums.MusicStatusType;
 
 import javax.persistence.*;
@@ -12,7 +10,8 @@ import java.util.List;
  * 音乐实体类
  */
 @Entity
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Music extends BaseEntity {
@@ -34,7 +33,7 @@ public class Music extends BaseEntity {
     private File file;
 
     @ManyToMany
-    @JoinTable(name = "music_artist",
+    @JoinTable(name = "artist_music",
             joinColumns = @JoinColumn(name = "music_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "artist_id", referencedColumnName = "id"))
     private List<Artist> artistList;

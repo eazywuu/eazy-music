@@ -15,6 +15,6 @@ public class MusicCreateReq {
 
     private String fileId;
 
-    @NotEmpty(message = "歌手列表不能为空")
+    @NotEmpty(message = "歌手未选择")
     private List<String> artistIds;
 }

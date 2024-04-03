@@ -11,20 +11,36 @@ import xyz.eazywu.music.object.request.MusicCreateReq;
 import xyz.eazywu.music.object.request.MusicUpdateReq;
 import xyz.eazywu.music.object.vo.MusicVo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Mapper(componentModel = "spring", uses = {FileMapper.class},
         nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface MusicMapper extends MapperInterface<Music, MusicDto>{
-    MusicVo toVo(MusicDto musicDto);
+
+    /**
+     * 将req中的fileId映射到dto中file字段的id，转换时，在dto中通过fileId创建file字段
+     */
+    @Mapping(source = "fileId", target = "file.id")
+    @Mapping(source = "artistIds", target = "artistList")
+    MusicDto toDto(MusicCreateReq musicCreateReq);
 
     @Mapping(source = "fileId", target = "file.id")
-    MusicDto toDto(MusicCreateReq musicCreateReq);
+    @Mapping(source = "artistIds", target = "artistList")
+    MusicDto toDto(MusicUpdateReq musicUpdateReq);
+
+    MusicVo toVo(MusicDto musicDto);
 
     MusicDto toDto(Music music);
 
-    MusicDto toDto(MusicUpdateReq musicUpdateReq);
-
-    ArtistDto convert(String id);
-
-    String convert(ArtistDto artistDto);
+    default List<ArtistDto> artistListMapping(List<String> artistIds) {
+        List<ArtistDto> artistList = new ArrayList<>();
+        artistIds.forEach((id) -> {
+            ArtistDto artistDto = new ArtistDto();
+            artistDto.setId(id);
+            artistList.add(artistDto);
+        });
+        return artistList;
+    }
 }

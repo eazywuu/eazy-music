@@ -1,6 +1,6 @@
 package xyz.eazywu.music.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -12,9 +12,12 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import xyz.eazywu.music.exception.RestAuthenticationEntryPoint;
 import xyz.eazywu.music.filter.JwtAuthenticationFilter;
 import xyz.eazywu.music.filter.JwtAuthorizationFilter;
+import xyz.eazywu.music.filter.JwtProvider;
 import xyz.eazywu.music.service.UserService;
 
 /**
@@ -26,15 +29,9 @@ import xyz.eazywu.music.service.UserService;
         prePostEnabled = true,
         securedEnabled = true,
         jsr250Enabled = true)
+@RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    /**
-     * 生成jwt的密钥
-     */
-    public static final String SECRET = "EazyMusic";
-    /**
-     * 到期时间10 days
-     */
-    public static final long EXPIRATION_TIME = 864000000;
+
     /**
      * token前缀标注
      */
@@ -57,11 +54,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      */
     public static final String PLAYLIST_URI = "/playlists/**";
 
-    UserService userService;
+    private final UserService userService;
 
-    RestAuthenticationEntryPoint restAuthenticationEntryPoint;
+    private final RestAuthenticationEntryPoint restAuthenticationEntryPoint;
 
-    PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
+
+    private final JwtProvider jwtProvider;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -75,9 +74,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 // 添加用户登录信息filter
-//                .addFilterAt(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 // 添加token filter
-                .addFilter(new JwtAuthorizationFilter(authenticationManager(), userService))
+                .addFilterBefore(jwtAuthorizationFilter(), BasicAuthenticationFilter.class)
                 // 开启异常处理器
                 .exceptionHandling()
                 // 注入认证入口点
@@ -97,13 +96,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userService).passwordEncoder(passwordEncoder);
     }
 
-
     @Bean
     JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
-        JwtAuthenticationFilter filter = new JwtAuthenticationFilter(authenticationManager());
+        JwtAuthenticationFilter filter = new JwtAuthenticationFilter(authenticationManager(), jwtProvider);
         //这句很关键，重用WebSecurityConfigurerAdapter配置的AuthenticationManager，不然要自己组装AuthenticationManager
         filter.setAuthenticationManager(authenticationManagerBean());
         return filter;
+    }
+
+    @Bean
+    JwtAuthorizationFilter jwtAuthorizationFilter() throws Exception {
+        return new JwtAuthorizationFilter(authenticationManager(), userService, jwtProvider);
     }
 
     /**
@@ -115,20 +118,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/webjars/**")
                 .antMatchers("/v3/**")
                 .antMatchers("/doc.html")
-                .antMatchers("/wechat/auth_uri");
-    }
-
-    @Autowired
-    public void setUserService(UserService userService) {
-        this.userService = userService;
-    }
-
-    @Autowired
-    public void setRestAuthenticationEntryPoint(RestAuthenticationEntryPoint restAuthenticationEntryPoint) {
-        this.restAuthenticationEntryPoint = restAuthenticationEntryPoint;
-    }
-    @Autowired
-    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
+                .antMatchers("/wechat/**");
     }
 }

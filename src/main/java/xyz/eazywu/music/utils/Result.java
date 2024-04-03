@@ -1,11 +1,11 @@
 package xyz.eazywu.music.utils;
 
 import lombok.Data;
-import xyz.eazywu.music.exception.ResultType;
+import xyz.eazywu.music.exception.ExceptionType;
 
 /**
  * @author wyz
- * @date 2021/05/12
+ * @since 2021/05/12
  */
 @Data
 public class Result<T> {
@@ -21,8 +21,8 @@ public class Result<T> {
      */
     public static Result<Void> success() {
         Result<Void> result = new Result<>();
-        result.setCode(ResultType.SUCCESS.getCode());
-        result.setMessage(ResultType.SUCCESS.getMessage());
+        result.setCode(ExceptionType.SUCCESS.getCode());
+        result.setMessage(ExceptionType.SUCCESS.getMessage());
         return result;
     }
 
@@ -31,8 +31,8 @@ public class Result<T> {
      */
     public static <V> Result<V> success(V data) {
         Result<V> result = new Result<>();
-        result.code = ResultType.SUCCESS.getCode();
-        result.message = ResultType.SUCCESS.getMessage();
+        result.code = ExceptionType.SUCCESS.getCode();
+        result.message = ExceptionType.SUCCESS.getMessage();
         result.data = data;
         return result;
     }
@@ -42,8 +42,8 @@ public class Result<T> {
      */
     public static Result<Void> failure() {
         Result<Void> result = new Result<>();
-        result.setCode(ResultType.FAILURE.getCode());
-        result.setMessage(ResultType.FAILURE.getMessage());
+        result.setCode(ExceptionType.FAILURE.getCode());
+        result.setMessage(ExceptionType.FAILURE.getMessage());
         return result;
     }
 
@@ -52,7 +52,7 @@ public class Result<T> {
      */
     public static Result<Void> failure(String message) {
         Result<Void> result = new Result<>();
-        result.setCode(ResultType.FAILURE.getCode());
+        result.setCode(ExceptionType.FAILURE.getCode());
         result.setMessage(message);
         return result;
     }
@@ -60,10 +60,10 @@ public class Result<T> {
     /**
      * 失败，使用已定义枚举
      */
-    public static Result<Void> failure(ResultType ResultType) {
+    public static Result<Void> failure(ExceptionType exceptionType) {
         Result<Void> result = new Result<>();
-        result.setCode(ResultType.getCode());
-        result.setMessage(ResultType.getMessage());
+        result.setCode(exceptionType.getCode());
+        result.setMessage(exceptionType.getMessage());
         return result;
     }
 }

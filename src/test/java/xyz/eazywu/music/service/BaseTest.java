@@ -12,13 +12,15 @@ public abstract class BaseTest {
     @Resource
     private UserService userService;
 
+    public static final String MOCK_NAME = "user_wyz";
+
     @BeforeEach
      void setDefaultUser() {
-        UserCreateReq userCreateRequestDto = new UserCreateReq();
-        userCreateRequestDto.setUsername("test-data");
-        userCreateRequestDto.setNickname("test-data");
-        userCreateRequestDto.setPassword("test-data");
-        userCreateRequestDto.setGender(GenderType.UNKNOWN);
-        userService.create(userCreateRequestDto);
+        UserCreateReq userCreateReq = new UserCreateReq();
+        userCreateReq.setUsername("user_wyz");
+        userCreateReq.setNickname("user_wyz");
+        userCreateReq.setPassword("user_wyz");
+        userCreateReq.setGender(GenderType.UNKNOWN);
+        userService.create(userCreateReq);
     }
 }

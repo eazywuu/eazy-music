@@ -1,6 +1,7 @@
 package xyz.eazywu.music.object.entity;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -11,7 +12,8 @@ import javax.persistence.MappedSuperclass;
 import java.util.Date;
 
 @MappedSuperclass
-@Data
+@Getter
+@Setter
 public abstract class BaseEntity {
     @Id
     @GeneratedValue(generator = "ksuid")

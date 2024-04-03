@@ -1,15 +1,14 @@
 package xyz.eazywu.music.object.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import xyz.eazywu.music.object.enums.PlaylistStatusType;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Playlist extends BaseEntity{

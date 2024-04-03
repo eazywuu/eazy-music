@@ -5,7 +5,7 @@ spring:
   profiles:
     active: dev
   application:
-    name: eazy-music
+    name: easy-music
   datasource:
     name: druid
     driver-class-name: ${MYSQL_DRIVER_CLASS_NAME}
@@ -17,7 +17,7 @@ spring:
   flyway:
     enabled: true
   mvc:
-    pathmatch:
+    path match:
       matching-strategy: ant_path_matcher
 
 wechat:

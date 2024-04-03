@@ -38,7 +38,7 @@ class FileServiceTest extends BaseTest {
     }
 
     @Test
-    @WithMockUser(username = "test-data")
+    @WithMockUser(username = BaseTest.MOCK_NAME)
     void finishUpload() {
         FileUploadReq fileUploadReq = new FileUploadReq();
         fileUploadReq.setName("test-filename");
@@ -46,10 +46,26 @@ class FileServiceTest extends BaseTest {
         fileUploadReq.setExt("mp3");
         fileUploadReq.setSize(30000L);
         FileUploadDto fileUploadDto = fileService.initUpload(fileUploadReq);
+
         FileDto fileDto = fileService.finishUpload(fileUploadDto.getFileId());
         log.info(fileDto.toString());
         Assertions.assertEquals(fileUploadDto.getFileId(), fileDto.getId());
         Assertions.assertEquals(FileStatusType.UPLOADED, fileDto.getStatus());
+    }
+
+    @Test
+    void initUploadMaxSize() {
+        FileUploadReq fileUploadReq = new FileUploadReq();
+        fileUploadReq.setName("测试文件名");
+        fileUploadReq.setExt("mp3");
+        fileUploadReq.setKey("835741aba850778a5b06bfd57f55c98c");
+        fileUploadReq.setSize(6082813636L);
+        FileUploadDto fileUploadDto = fileService.initUpload(fileUploadReq);
+        Assertions.assertNotNull(fileUploadDto.getSecretKey());
+        Assertions.assertNotNull(fileUploadDto.getSecretId());
+        Assertions.assertNotNull(fileUploadDto.getSessionToken());
+        Assertions.assertNotNull(fileUploadDto.getFileId());
+        Assertions.assertEquals(fileUploadDto.getFileKey(), fileUploadReq.getKey());
     }
 
     @Test
