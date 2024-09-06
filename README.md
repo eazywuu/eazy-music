@@ -12,12 +12,12 @@ repository返回entity给service -》service转换为dto给controller -》 contr
 2. 引入validation-starter做用户信息校验。
 3. 设计dto，添加更新用户自动映射。 UserMapper.updateEntity
 
-## Day31 2023-03-08
+## Step 31  
 
-1. 完成音乐管理服务api
+1. 完成音乐管理服务api 
    1. create，update，search，publish，close
 
-## Day 34 2023-03-11
+## Step 34
 1. 实现文件上传接口
    1. FileEntity，FileDto，FileUploadRequestDto相互转换
    2. FileUploadDto, FileUploadVo相互转换
